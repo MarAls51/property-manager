@@ -1,0 +1,65 @@
+.wrapper{
+    min-height: 100vh;
+    background-color: 	#b2b4b2;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    min-width: 320px;
+}
+
+.login-box{
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    width: 90%;
+    justify-content: center;
+    max-width: 400px;
+    border-radius: 10px;
+}
+
+.login-btn {
+    color: white;
+    background-color: #a7a4e0;
+    border-color: #a7a4e0;
+    outline: none;
+}
+
+.login-btn:hover {
+    color: white;
+    background-color: #8c88e0;
+    border-color: #8c88e0;
+}
+
+.login-btn:focus,
+.login-btn.focus {
+    box-shadow: 0 0 0 .2rem #8c88e0;
+    background-color: #8c88e0;
+    border-color: #8c88e0;
+    color: white;
+}
+
+.login-btn.disabled,
+.login-btn:disabled {
+    color: #212529;
+    background-color: gray;
+    border-color: gray
+}
+
+.login-btn:not(:disabled):not(.disabled):active,
+.login-btn:not(:disabled):not(.disabled).active,
+.show>.login-btn.dropdown-toggle {
+    color: white;
+    background-color: #8c88e0;
+    border-color: #8c88e0;
+}
+
+.btn-outline-primary {
+    color: #a7a4e0;
+    background-color: transparent;
+    background-image: none;
+    border-color: #a7a4e0;
+}
+
+.link{
+    text-decoration: none;
+}
