@@ -1,4 +1,4 @@
-.wrapper{
+.login-wrapper{
     min-height: 100vh;
     background-color: 	#b2b4b2;
     display: flex;
@@ -60,6 +60,6 @@
     border-color: #a7a4e0;
 }
 
-.link{
+.login-link{
     text-decoration: none;
 }

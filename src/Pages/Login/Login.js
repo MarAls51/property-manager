@@ -42,7 +42,7 @@ const Login = () => {
   );
 
   return (
-    <div className="wrapper">
+    <div className="login-wrapper">
       <div className="container">
         <div className="row">
           <div className="col d-flex text-center justify-content-center">
@@ -77,7 +77,7 @@ const Login = () => {
                   <div className="d-flex">
                     <span>
                       Need an account?{" "}
-                      <Link className="link" onClick={()=>{setFlag(!flag)}}>
+                      <Link className="login-link" onClick={()=>{setFlag(!flag)}}>
                         Sign Up
                       </Link>
                     </span>
@@ -114,7 +114,7 @@ const Login = () => {
                   <div className="d-flex">
                     <span>
                       Have an account?{" "}
-                      <Link className="link" onClick={()=>{setFlag(!flag)}}>
+                      <Link className="login-link" onClick={()=>{setFlag(!flag)}}>
                         Login
                       </Link>
                     </span>
