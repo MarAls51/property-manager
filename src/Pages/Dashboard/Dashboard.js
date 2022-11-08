@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import { db } from "../../Context/firebase";
 import { useUserAuth } from "../../Context/UserAuthContext";
 import { CustomFooter } from "../../Components/Footer/Footer";
+import { orderBy } from "firebase/firestore";
 export const Dashboard = () => {
   const { user, setUserData, userDataUpdated, setItemsCount, setItemsValue } = useUserAuth();
   useEffect(
@@ -15,7 +16,7 @@ export const Dashboard = () => {
       const fetchUserData = async () => {
         try {
           const data = await getDocs(
-            collection(db, "Users", `${user.uid}`, "Personal Items")
+            collection(db, "Users", `${user.uid}`, "Personal Items"), orderBy("Name", "asc")
           );
           var count = 0
           var value = 0
