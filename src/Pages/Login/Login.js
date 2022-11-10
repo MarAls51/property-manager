@@ -10,7 +10,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { logIn, signUp, user, setAdminAccount } = useUserAuth();
-  const [deletedAccount, setDeletedAccount] = useState(false);
+  const [deletedAccount, setDeletedAccount] = useState();
   const [flag, setFlag] = useState(true);
   const navigate = useNavigate();
 
@@ -49,6 +49,7 @@ const Login = () => {
   useEffect(
     () => {
       const handleNavigate = async () => {
+
         if (!deletedAccount) {
           await getDoc(doc(db, "Admins", `${user.uid}`)).then((snapshot) => {
             console.log(snapshot.data());
