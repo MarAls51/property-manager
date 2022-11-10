@@ -13,14 +13,17 @@ const userAuthContext = createContext();
 export function UserAuthContextProvider({ children }) {
   const [user, setUser] = useState();
   const [userData, setUserData] = useState();
+  const [users, setUsers] = useState();
+  const [numberOfUsers, setNumberOfUsers] = useState(0);
+  const [userPrivilege, setPrivilege] = useState(false);
   const [userDataUpdated, setUserDataUpdated] = useState();
   const [itemsCount, setItemsCount] = useState(0);
   const [itemsValue, setItemsValue] = useState(0);
-  function logIn(email, password) {
+ function logIn(email, password) {
     return signInWithEmailAndPassword(auth, email, password);
   }
-  function signUp(email, password) {
-    return createUserWithEmailAndPassword(auth, email, password);
+ function signUp(email, password) {
+    return  createUserWithEmailAndPassword(auth, email, password);
   }
   function logOut() {
     return signOut(auth);
@@ -44,9 +47,15 @@ export function UserAuthContextProvider({ children }) {
         signUp,
         logOut,
         userData,
+        userPrivilege,
+        setPrivilege,
+        users,
+        setUsers,
         setUserData,
         setUserDataUpdated,
         userDataUpdated,
+        setNumberOfUsers,
+        numberOfUsers,
         itemsCount,
         setItemsCount,
         itemsValue,

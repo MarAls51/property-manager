@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Form } from "react-bootstrap";
+import { doc, setDoc} from "firebase/firestore";
+import { db } from "../../Context/firebase";
 import { useUserAuth } from "../../Context/UserAuthContext";
 import "./Login.css";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { logIn, signUp, user } = useUserAuth();
+  const { logIn, signUp, user, userPrivilege, setPrivilege } = useUserAuth();
   const [flag, setFlag ] = useState(true);
   const navigate = useNavigate();
 
@@ -31,11 +33,20 @@ const Login = () => {
 
   useEffect(
     () => {
+      const createUser = async () => {
+      if(user) { 
+      const query = await doc(db, "Users", `${user.uid}`);
+      await setDoc(query, {
+        admin: userPrivilege
+      }); }
+    }
+      
       const handleNavigate = async () => {
         if (user) {
           return navigate("/dashboard");
         }
       };
+      createUser();
       handleNavigate();
     }, // eslint-disable-next-line
     [user]
@@ -106,11 +117,18 @@ const Login = () => {
                     </Form.Group>
 
                     <div className="d-grid">
-                      <button className="mb-4 btn login-btn" type="Submit">
-                        Sign Up
+                      <button className="mb-4 btn login-btn" type="Submit" onClick={() => {setPrivilege(false)}}>
+                        Sign Up As User
+                      </button>
+                    </div>
+
+                    <div className="d-grid">
+                      <button className="mb-4 btn login-btn" type="Submit" onClick={() => {setPrivilege(true)}}>
+                        Sign Up As Admin
                       </button>
                     </div>
                   </Form>
+
                   <div className="d-flex">
                     <span>
                       Have an account?{" "}

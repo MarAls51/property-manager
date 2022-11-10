@@ -6,7 +6,6 @@ export const Items = () => {
   const [adding, setAdding] = useState(false);
   const [editing, setEditing] = useState(false);
 
-
   return (
     <div className="row mt-5">
       <div className="col-12">

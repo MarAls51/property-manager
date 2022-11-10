@@ -10,9 +10,20 @@ import { useUserAuth } from "../../Context/UserAuthContext";
 import { CustomFooter } from "../../Components/Footer/Footer";
 import { orderBy } from "firebase/firestore";
 export const Dashboard = () => {
-  const { user, setUserData, userDataUpdated, setItemsCount, setItemsValue } = useUserAuth();
+  const { user, setUsers, setUserData, userDataUpdated, setItemsCount, setItemsValue, setNumberOfUsers} = useUserAuth();
+
   useEffect(
     () => {
+      const fetchUsers = async () => { 
+        const users = await getDocs(collection(db, "Users"));
+        let usersArray = [];
+        users.forEach((doc) => {
+          usersArray.push({Id: doc.id});
+        });
+        await setUsers(usersArray);
+        await setNumberOfUsers(usersArray.length);
+      }
+
       const fetchUserData = async () => {
         try {
           const data = await getDocs(
@@ -41,6 +52,8 @@ export const Dashboard = () => {
       if (Object.keys(user).length > 0) {
         fetchUserData();
       }
+
+      fetchUsers();
     },
     // eslint-disable-next-line
     [user, userDataUpdated]

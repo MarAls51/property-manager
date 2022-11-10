@@ -7,8 +7,6 @@ export const AddItems = (props) => {
     const [name, setName] = useState("");
     const [price, setPrice] = useState();
 
-   
-  
     const handleAddItem = async (e) => {
         if(name !== "" && !isNaN(price))
         try {

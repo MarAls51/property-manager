@@ -3,16 +3,20 @@ import { usePagination, useTable } from "react-table";
 import { useMemo } from "react";
 import { doc, deleteDoc } from "firebase/firestore";
 import { useGlobalFilter } from "react-table";
-import { db } from "../../Context/firebase";
+import { db} from "../../Context/firebase";
 import { collection } from "firebase/firestore";
-import { TestColumns } from "./columns";
+import { userColumns } from "./columns";
+import { adminColumns } from "./columns";
 import "./Table.css";
 import { useSortBy } from "react-table";
 import { GlobalFilter } from "./GlobalFIlter";
 export const Table = () => {
-  const { userData, userDataUpdated, setUserDataUpdated, user } = useUserAuth();
-  const columns = useMemo(() => TestColumns, []);
-  const data = useMemo(() => userData, [userData]);
+  const { userData, userDataUpdated, setUserDataUpdated, userPrivilege, users, user} = useUserAuth();
+  const columns = userPrivilege ?  adminColumns : userColumns ;
+  const header = userPrivilege ? "Id" :  "Name";
+  const tableColumns = useMemo(() => columns, []);
+  const rowData = userPrivilege ?  users : userData;
+  const data = useMemo(() => rowData, [rowData]);
 
   const {
     getTableProps,
@@ -29,12 +33,12 @@ export const Table = () => {
     prepareRow,
   } = useTable(
     {
-      columns: columns,
+      columns: tableColumns,
       data: data,
       initialState: {
         sortBy: [
           {
-            id: "Name",
+            header: `${header}`,
             desc: false,
           },
         ],
@@ -68,6 +72,17 @@ export const Table = () => {
       const query = await doc(db, "Users", `${user.uid}`);
       const colRef = await collection(query, "Personal Items");
       await deleteDoc(doc(colRef, id));
+      setUserDataUpdated(!userDataUpdated);
+    } catch (error) {
+      console.log(error.message);
+    }
+    return;
+  }
+
+  async function handleDeleteUser(id) {
+    try {
+      const query = await doc(db, "Users", id);
+      await deleteDoc(query);
       setUserDataUpdated(!userDataUpdated);
     } catch (error) {
       console.log(error.message);
@@ -109,20 +124,10 @@ export const Table = () => {
                     );
                   })}
                   <td>
-                    <button
-                      onClick={() => {
-                        console.log(row.original);
-                      }}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => {
-                        handleDeleteItem(row.original.id);
-                      }}
-                    >
-                      Delete
-                    </button>
+                    { userPrivilege ? <button onClick={() => {console.log(row.original);}}> View </button> : <button onClick={() => {console.log(row.original);}}> Edit </button>}
+                    
+                    { userPrivilege ? <button onClick={() => {handleDeleteUser(row.original.Id);}}> Delete User </button> : <button onClick={() => {handleDeleteItem(row.original);}}> Delete Item </button>}
+                    
                   </td>
                 </tr>
               </>

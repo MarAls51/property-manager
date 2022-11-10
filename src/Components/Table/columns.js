@@ -1,4 +1,4 @@
-export const TestColumns = [
+export const userColumns = [
     {
         Header: 'Name',
         accessor: "Name"
@@ -7,4 +7,12 @@ export const TestColumns = [
         Header: "Price",
         accessor: "Price"
     }
+]
+
+export const adminColumns = [
+    {
+        Header: 'Id',
+        accessor: "Id"
+    }
+    
 ]
