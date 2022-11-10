@@ -1,11 +1,10 @@
 
 import { useState } from "react";
 import { AddItems } from "./AddItems";
-import { EditItems } from "./EditItems";
 import { DisplayUsers } from "./DisplayUsers";
 export const Users = () => {
   const [adding, setAdding] = useState(false);
-  const [editing, setEditing] = useState(false);
+  
 
 
   return (
@@ -15,9 +14,9 @@ export const Users = () => {
         <div className="row">
           <div className="col">
             <div className="dashboard-box p-2 pt-3 pb-3" style={{minHeight: "792px"}}>
-              {(!adding && !editing) && <DisplayUsers setEditing={setEditing} setAdding={setAdding} />}
-              {( adding && !editing) && <AddItems setAdding={setAdding} />}
-              {( !adding && editing) && <EditItems  setAdding={setAdding}/>}
+              {(!adding) && <DisplayUsers  setAdding={setAdding} />}
+              {( adding) && <AddItems setAdding={setAdding} />}
+             
             </div>
           </div>
         </div>

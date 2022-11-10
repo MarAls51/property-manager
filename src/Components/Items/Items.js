@@ -5,7 +5,7 @@ import { EditItems } from "./EditItems";
 export const Items = () => {
   const [adding, setAdding] = useState(false);
   const [editing, setEditing] = useState(false);
-
+  const [selectedItem, setSelectedItem] = useState({})
 
   return (
     <div className="row mt-5">
@@ -14,9 +14,9 @@ export const Items = () => {
         <div className="row">
           <div className="col">
             <div className="dashboard-box p-2 pt-3 pb-3" style={{minHeight: "792px"}}>
-              {(!adding && !editing) && <DisplayItems setEditing={setEditing} setAdding={setAdding} />}
+              {(!adding && !editing) && <DisplayItems setSelectedItem={setSelectedItem} setAdding={setAdding} setEditing={setEditing}  />}
               {( adding && !editing) && <AddItems setAdding={setAdding} />}
-              {( !adding && editing) && <EditItems  setAdding={setAdding}/>}
+              {( !adding && editing) && <EditItems selectedItem={selectedItem} setEditing={setEditing}/>}
             </div>
           </div>
         </div>

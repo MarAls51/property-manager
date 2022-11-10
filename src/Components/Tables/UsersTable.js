@@ -131,6 +131,7 @@ export const UsersTable = () => {
                         }}
                         {...cell.getCellProps()}
                       >
+                       {cell.column.Header === "Price" && "$"}
                         {cell.render("Cell")}
                       </td>
                     );

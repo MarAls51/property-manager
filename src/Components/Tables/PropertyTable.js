@@ -4,13 +4,14 @@ import { useMemo } from "react";
 import { doc, deleteDoc } from "firebase/firestore";
 import { useGlobalFilter } from "react-table";
 import { db } from "../../Context/firebase";
-import { collection } from "firebase/firestore";
+import { collection, getDoc} from "firebase/firestore";
 import { propertyColumns } from "./PropertyColumns";
 import "./Table.css";
 import { useSortBy } from "react-table";
 import { GlobalFilter } from "./GlobalFIlter";
-export const PropertyTable = () => {
+export const PropertyTable = (props) => {
   const { userData, userDataUpdated, setUserDataUpdated, user } = useUserAuth();
+
   const pTableColumns = useMemo(() => propertyColumns, []);
   const data = useMemo(() => userData, [userData]);
 
@@ -75,6 +76,20 @@ export const PropertyTable = () => {
     return;
   }
 
+  async function handleEditButton(id) {
+    try {
+      const docRef = await doc(db, "Users", `${user.uid}`, "Personal Items", `${id}`);
+      const docSnap = await getDoc(docRef)
+      if (docSnap.exists){
+        props.setSelectedItem({...docSnap.data(), id: docSnap.id})
+        props.setEditing(true)
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+    return;
+  }
+
   return (
     <>
       <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
@@ -111,7 +126,7 @@ export const PropertyTable = () => {
                   <td>
                     <button
                       onClick={() => {
-                        console.log(row.original);
+                        handleEditButton(row.original.id)
                       }}
                     >
                       Edit

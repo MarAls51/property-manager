@@ -15,7 +15,7 @@ export const DisplayItems = (props) => {
           </button>
         </div>
       </div>
-      {userData && <PropertyTable />}
+      {userData && <PropertyTable setSelectedItem={props.setSelectedItem} setEditing={props.setEditing} />}
     </>
   );
 };
