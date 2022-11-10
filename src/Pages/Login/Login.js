@@ -16,7 +16,7 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      logIn(email, password).then(async (resp)=>{
+     await logIn(email, password).then(async (resp)=>{
        const userAccount = await getDoc(doc(db, "DeletedUsers", `${resp.user.uid}`));
     if (userAccount.exists()){
       await getDoc(doc(db, "DeletedUsers", `${resp.user.uid}`)).then((snapshot) => {
@@ -34,7 +34,7 @@ const Login = () => {
   const handleSignUp = async (e) => {
     e.preventDefault();
     try {
-      signUp(email, password).then((resp)=>{setDoc(doc(db, "Users", `${resp.user.uid}`), {
+      await signUp(email, password).then((resp)=>{setDoc(doc(db, "Users", `${resp.user.uid}`), {
         User: true,
       });})
       return navigate("/dashboard");
