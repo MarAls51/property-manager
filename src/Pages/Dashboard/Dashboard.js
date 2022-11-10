@@ -89,7 +89,7 @@ export const Dashboard = () => {
     },
 
     // eslint-disable-next-line
-    [user]
+    [user, userDataUpdated]
   );
 
   return (

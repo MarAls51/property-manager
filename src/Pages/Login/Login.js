@@ -10,13 +10,24 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { logIn, signUp, user, setAdminAccount } = useUserAuth();
+  const [deletedAccount, setDeletedAccount] = useState(false);
   const [flag, setFlag] = useState(true);
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      logIn(email, password);
+      logIn(email, password).then(async (resp)=>{
+       const userAccount = await getDoc(doc(db, "DeletedUsers", `${resp.user.uid}`));
+    if (userAccount.exists()){
+      await getDoc(doc(db, "DeletedUsers", `${resp.user.uid}`)).then((snapshot) => {
+        alert(`Your account was deleted on ${snapshot.get("DeleteDate")}, please login with a different account`);
+       });
+      setDeletedAccount(true);
+    }  else {
+      setDeletedAccount(false)
+    }
+    });
     } catch (err) {
       console.log(err);
     }
@@ -34,10 +45,11 @@ const Login = () => {
     }
   };
 
+
   useEffect(
     () => {
       const handleNavigate = async () => {
-        if (user) {
+        if (!deletedAccount) {
           await getDoc(doc(db, "Admins", `${user.uid}`)).then((snapshot) => {
             console.log(snapshot.data());
             if (snapshot.get("Admin") === true) {
@@ -45,13 +57,13 @@ const Login = () => {
               return navigate("/dashboard");
             } else {
               return navigate("/dashboard");
-            }
+            } 
           });
-        }
+        } 
       };
       handleNavigate();
     }, // eslint-disable-next-line
-    [user]
+    [deletedAccount]
   );
 
   return (
