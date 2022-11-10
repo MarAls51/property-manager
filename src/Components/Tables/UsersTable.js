@@ -1,7 +1,7 @@
 import { useUserAuth } from "../../Context/UserAuthContext";
 import { usePagination, useTable } from "react-table";
 import { useMemo } from "react";
-import { getDocs, orderBy } from "firebase/firestore";
+import { getDocs, orderBy, deleteDoc, doc, setDoc, addDoc } from "firebase/firestore";
 import { useGlobalFilter } from "react-table";
 import { db } from "../../Context/firebase";
 import { collection } from "firebase/firestore";
@@ -12,7 +12,7 @@ import { GlobalFilter } from "./GlobalFIlter";
 import { useState } from "react";
 import { propertyColumns } from "./PropertyColumns";
 export const UsersTable = () => {
-  const { usersData } =
+  const { usersData, userDataUpdated, setUserDataUpdated} =
     useUserAuth();
   const [selectedUsersData, setSelectedUsersData] = useState();
   const columns = useMemo(() => {
@@ -74,6 +74,34 @@ export const UsersTable = () => {
     });
   };
 
+
+  async function handleDeleteUser(id) {
+    try {
+      const query = await doc(db, "Users", `${id}`);
+      await deleteDoc(query);
+      const date = new Date()
+     setDoc(doc(db, "DeletedUsers", `${id}`), {
+        DeleteDate: date.toString(),
+      });
+      setUserDataUpdated(!userDataUpdated);
+    } catch (error) {
+      console.log(error.message);
+    }
+    return;
+  }
+
+
+  async function handleDownloadUser(id) {
+    try {
+      const query = await doc(db, "Users", id);
+      await deleteDoc(query);
+      setUserDataUpdated(!userDataUpdated);
+    } catch (error) {
+      console.log(error.message);
+    }
+    return;
+  }
+
   async function handleViewItem(id) {
     try {
       const data = await getDocs(
@@ -92,6 +120,9 @@ export const UsersTable = () => {
     } catch (error) {
       console.log(error.message);
     }
+
+
+    
   }
 
   return (
@@ -148,10 +179,17 @@ export const UsersTable = () => {
                         </button>
                         <button
                           onClick={() => {
-                            console.log("Delete");
+                            handleDeleteUser(row.original.id);
                           }}
                         >
                           Delete
+                        </button>
+                        <button
+                          onClick={() => {
+                            handleDownloadUser(row.original.id);
+                          }}
+                        >
+                          Download
                         </button>
                       </>
                     )}

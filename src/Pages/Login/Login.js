@@ -16,7 +16,16 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      logIn(email, password);
+      logIn(email, password).then(async (resp)=>{
+       const userAccount = await getDoc(doc(db, "DeletedUsers", `${resp.user.uid}`));
+    if (userAccount.exists()){
+      await getDoc(doc(db, "DeletedUsers", `${resp.user.uid}`)).then((snapshot) => {
+        alert(`Your account was deleted on ${snapshot.get("DeleteDate")}, please login with a different account`);
+       });
+    }  else {
+      return navigate("/dashboard");
+    }
+    });
     } catch (err) {
       console.log(err);
     }
@@ -28,28 +37,26 @@ const Login = () => {
       signUp(email, password).then((resp)=>{setDoc(doc(db, "Users", `${resp.user.uid}`), {
         User: true,
       });})
-      
+      return navigate("/dashboard");
     } catch (err) {
       console.log(err);
     }
   };
 
+
   useEffect(
     () => {
-      const handleNavigate = async () => {
+      const handleAdminAccount = async () => {
         if (user) {
           await getDoc(doc(db, "Admins", `${user.uid}`)).then((snapshot) => {
             console.log(snapshot.data());
             if (snapshot.get("Admin") === true) {
               setAdminAccount(true);
-              return navigate("/dashboard");
-            } else {
-              return navigate("/dashboard");
             }
           });
-        }
+        } 
       };
-      handleNavigate();
+      handleAdminAccount();
     }, // eslint-disable-next-line
     [user]
   );
