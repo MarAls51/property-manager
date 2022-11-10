@@ -46,8 +46,7 @@ const Login = () => {
 
   useEffect(
     () => {
-      const handleNavigate = async () => {
-
+      const handleAdminAccount = async () => {
         if (user) {
           await getDoc(doc(db, "Admins", `${user.uid}`)).then((snapshot) => {
             console.log(snapshot.data());
@@ -57,7 +56,7 @@ const Login = () => {
           });
         } 
       };
-      handleNavigate();
+      handleAdminAccount();
     }, // eslint-disable-next-line
     [user]
   );
