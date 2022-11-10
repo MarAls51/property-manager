@@ -1,19 +1,30 @@
 import { useUserAuth } from "../../Context/UserAuthContext";
 import { usePagination, useTable } from "react-table";
 import { useMemo } from "react";
-import { doc, deleteDoc } from "firebase/firestore";
+import { getDocs, orderBy } from "firebase/firestore";
 import { useGlobalFilter } from "react-table";
 import { db } from "../../Context/firebase";
 import { collection } from "firebase/firestore";
-import { TestColumns } from "./columns";
+import { usersColumns } from "./UsersColumns";
 import "./Table.css";
 import { useSortBy } from "react-table";
 import { GlobalFilter } from "./GlobalFIlter";
-export const Table = () => {
-  const { userData, userDataUpdated, setUserDataUpdated, user } = useUserAuth();
-  const columns = useMemo(() => TestColumns, []);
-  const data = useMemo(() => userData, [userData]);
-
+import { useState } from "react";
+import { propertyColumns } from "./PropertyColumns";
+export const UsersTable = () => {
+  const { usersData } =
+    useUserAuth();
+  const [selectedUsersData, setSelectedUsersData] = useState();
+  const columns = useMemo(() => {
+    if (selectedUsersData) {
+      return propertyColumns;
+    } else return usersColumns;
+  }, [selectedUsersData]);
+  const data = useMemo(() => {
+    if (selectedUsersData) {
+      return selectedUsersData;
+    } else return usersData;
+  }, [usersData, selectedUsersData]);
   const {
     getTableProps,
     getTableBodyProps,
@@ -34,7 +45,7 @@ export const Table = () => {
       initialState: {
         sortBy: [
           {
-            id: "Name",
+            id: "id",
             desc: false,
           },
         ],
@@ -57,26 +68,43 @@ export const Table = () => {
         <tr>
           <td>-</td>
           <td>-</td>
-          <td>-</td>
+          {selectedUsersData && <td>-</td>}
         </tr>
       );
     });
   };
 
-  async function handleDeleteItem(id) {
+  async function handleViewItem(id) {
     try {
-      const query = await doc(db, "Users", `${user.uid}`);
-      const colRef = await collection(query, "Personal Items");
-      await deleteDoc(doc(colRef, id));
-      setUserDataUpdated(!userDataUpdated);
+      const data = await getDocs(
+        collection(db, "Users", `${id}`, "Personal Items"),
+        orderBy("Name", "asc")
+      );
+      const items = await Promise.all(
+        data.docs.map(async (doc) => {
+          return {
+            ...doc.data(),
+            id: doc.id,
+          };
+        })
+      );
+      await setSelectedUsersData(items);
     } catch (error) {
       console.log(error.message);
     }
-    return;
   }
 
   return (
     <>
+      {selectedUsersData && (
+        <span
+          onClick={() => {
+            setSelectedUsersData();
+          }}
+        >
+          Back
+        </span>
+      )}
       <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
       <table {...getTableProps()}>
         <thead>
@@ -103,26 +131,29 @@ export const Table = () => {
                         }}
                         {...cell.getCellProps()}
                       >
-                        {cell.column.Header === "Price" && "$"}
                         {cell.render("Cell")}
                       </td>
                     );
                   })}
                   <td>
-                    <button
-                      onClick={() => {
-                        console.log(row.original);
-                      }}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => {
-                        handleDeleteItem(row.original.id);
-                      }}
-                    >
-                      Delete
-                    </button>
+                    {!selectedUsersData && (
+                      <>
+                        <button
+                          onClick={() => {
+                            handleViewItem(row.original.id);
+                          }}
+                        >
+                          View
+                        </button>
+                        <button
+                          onClick={() => {
+                            console.log("Delete");
+                          }}
+                        >
+                          Delete
+                        </button>
+                      </>
+                    )}
                   </td>
                 </tr>
               </>

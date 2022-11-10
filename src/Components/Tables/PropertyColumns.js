@@ -1,4 +1,4 @@
-export const TestColumns = [
+export const propertyColumns = [
     {
         Header: 'Name',
         accessor: "Name"

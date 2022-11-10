@@ -1,5 +1,5 @@
 import { useUserAuth } from "../../Context/UserAuthContext";
-import { Table } from "../Table/Table";
+import { PropertyTable } from "../Tables/PropertyTable";
 export const DisplayItems = (props) => {
   const { userData } = useUserAuth();
   return (
@@ -15,9 +15,7 @@ export const DisplayItems = (props) => {
           </button>
         </div>
       </div>
-      { userData &&
-<Table minRows={10}/>
-}
+      {userData && <PropertyTable />}
     </>
   );
 };

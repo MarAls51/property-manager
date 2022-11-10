@@ -1,6 +1,6 @@
 import { useUserAuth } from "../../Context/UserAuthContext";
 
-export const Overview = () => {
+export const PropertyOverview = () => {
   const { itemsCount, itemsValue } = useUserAuth();
   return (
     <div className="row">

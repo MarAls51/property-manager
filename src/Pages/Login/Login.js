@@ -2,13 +2,15 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Form } from "react-bootstrap";
 import { useUserAuth } from "../../Context/UserAuthContext";
+import { getDoc, doc, setDoc } from "firebase/firestore";
+import { db } from "../../Context/firebase";
 import "./Login.css";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { logIn, signUp, user } = useUserAuth();
-  const [flag, setFlag ] = useState(true);
+  const { logIn, signUp, user, setAdminAccount } = useUserAuth();
+  const [flag, setFlag] = useState(true);
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
@@ -23,7 +25,10 @@ const Login = () => {
   const handleSignUp = async (e) => {
     e.preventDefault();
     try {
-      signUp(email, password);
+      signUp(email, password).then((resp)=>{setDoc(doc(db, "Users", `${resp.user.uid}`), {
+        User: true,
+      });})
+      
     } catch (err) {
       console.log(err);
     }
@@ -33,7 +38,15 @@ const Login = () => {
     () => {
       const handleNavigate = async () => {
         if (user) {
-          return navigate("/dashboard");
+          await getDoc(doc(db, "Admins", `${user.uid}`)).then((snapshot) => {
+            console.log(snapshot.data());
+            if (snapshot.get("Admin") === true) {
+              setAdminAccount(true);
+              return navigate("/dashboard");
+            } else {
+              return navigate("/dashboard");
+            }
+          });
         }
       };
       handleNavigate();
@@ -77,14 +90,19 @@ const Login = () => {
                   <div className="d-flex">
                     <span>
                       Need an account?{" "}
-                      <Link className="login-link" onClick={()=>{setFlag(!flag)}}>
+                      <Link
+                        className="login-link"
+                        onClick={() => {
+                          setFlag(!flag);
+                        }}
+                      >
                         Sign Up
                       </Link>
                     </span>
                   </div>
                 </>
               )}
-               {!flag && (
+              {!flag && (
                 <>
                   <Form onSubmit={handleSignUp}>
                     <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -114,7 +132,12 @@ const Login = () => {
                   <div className="d-flex">
                     <span>
                       Have an account?{" "}
-                      <Link className="login-link" onClick={()=>{setFlag(!flag)}}>
+                      <Link
+                        className="login-link"
+                        onClick={() => {
+                          setFlag(!flag);
+                        }}
+                      >
                         Login
                       </Link>
                     </span>

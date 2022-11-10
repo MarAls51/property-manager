@@ -12,6 +12,10 @@ const userAuthContext = createContext();
 
 export function UserAuthContextProvider({ children }) {
   const [user, setUser] = useState();
+  const [usersData, setUsersData] = useState();
+  const [usersCount, setUsersCount] = useState();
+  const [adminMode, setAdminMode] = useState(false);
+  const [adminAccount, setAdminAccount] = useState(false);
   const [userData, setUserData] = useState();
   const [userDataUpdated, setUserDataUpdated] = useState();
   const [itemsCount, setItemsCount] = useState(0);
@@ -50,7 +54,9 @@ export function UserAuthContextProvider({ children }) {
         itemsCount,
         setItemsCount,
         itemsValue,
+        usersCount, setUsersCount,
         setItemsValue,
+        adminMode, setAdminMode, adminAccount, setAdminAccount, usersData, setUsersData
       }}
     >
       {children}
