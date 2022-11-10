@@ -93,9 +93,26 @@ export const UsersTable = () => {
 
   async function handleDownloadUser(id) {
     try {
-      const query = await doc(db, "Users", id);
-      await deleteDoc(query);
-      setUserDataUpdated(!userDataUpdated);
+      const data = await getDocs(
+        collection(db, "Users", `${id}`, "Personal Items"),
+        orderBy("Name", "asc")
+      );
+      const items = await Promise.all(
+        data.docs.map(async (doc) => {
+          return {
+            ...doc.data(),
+            id: doc.id,
+          };
+        })
+      );
+      items.push({UserId: id});
+      const fileData = JSON.stringify(items);
+      const rawData = new Blob([fileData], { type: "text/plain" });
+      const url = URL.createObjectURL(rawData);
+      const link = document.createElement("a");
+      link.download = "user-info.txt";
+      link.href = url;
+      link.click();
     } catch (error) {
       console.log(error.message);
     }
