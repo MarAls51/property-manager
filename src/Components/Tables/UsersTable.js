@@ -11,6 +11,7 @@ import { useSortBy } from "react-table";
 import { GlobalFilter } from "./GlobalFIlter";
 import { useState } from "react";
 import { propertyColumns } from "./PropertyColumns";
+import { jsPDF } from "jspdf";
 export const UsersTable = () => {
   const { usersData, userDataUpdated, setUserDataUpdated} =
     useUserAuth();
@@ -106,13 +107,12 @@ export const UsersTable = () => {
         })
       );
       items.push({UserId: id});
-      const fileData = JSON.stringify(items);
-      const rawData = new Blob([fileData], { type: "text/plain" });
-      const url = URL.createObjectURL(rawData);
-      const link = document.createElement("a");
-      link.download = "user-info.txt";
-      link.href = url;
-      link.click();
+      const doc = new jsPDF()
+      doc.setFontSize(10);
+      for(let i = 0; i < items.length ; i++) {
+        doc.text(JSON.stringify(items[i]), 20, 10 + i * 5);
+      }
+      doc.save("a4.pdf");
     } catch (error) {
       console.log(error.message);
     }
