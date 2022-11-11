@@ -9,31 +9,14 @@ import "./Login.css";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { logIn, signUp, user, setAdminAccount } = useUserAuth();
+  const { logIn, signUp, user, setAdminAccount, logOut } = useUserAuth();
   const [flag, setFlag] = useState(true);
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-     await logIn(email, password).then(async (resp)=>{
-       const userAccount = await getDoc(doc(db, "DeletedUsers", `${resp.user.uid}`));
-    if (userAccount.exists()){
-      await getDoc(doc(db, "DeletedUsers", `${resp.user.uid}`)).then((snapshot) => {
-        alert(`Your account was deleted on ${snapshot.get("DeleteDate")}, please login with a different account`);
-       });
-    }  else {
-      const adminAccount = await getDoc(doc(db, "Admins", `${resp.user.uid}`));
-        if (adminAccount.exists()){
-        await getDoc(doc(db, "Admins", `${resp.user.uid}`)).then((snapshot) => {
-        if (snapshot.get("Admin") === true) {
-          setAdminAccount(true);
-        }
-      });
-      }
-      return navigate("/dashboard");
-    }
-    });
+      await logIn(email, password)
     } catch (err) {
       console.log(err);
     }
@@ -42,14 +25,55 @@ const Login = () => {
   const handleSignUp = async (e) => {
     e.preventDefault();
     try {
-      await signUp(email, password).then((resp)=>{setDoc(doc(db, "Users", `${resp.user.uid}`), {
-        User: true,
-      });})
-      return navigate("/dashboard");
+      await signUp(email, password).then((resp) => {
+        setDoc(doc(db, "Users", `${resp.user.uid}`), {
+          User: true,
+        });
+      });
     } catch (err) {
       console.log(err);
     }
   };
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        if (user) {
+          const userAccount = await getDoc(
+            doc(db, "DeletedUsers", `${user.uid}`)
+          );
+          if (userAccount.exists()) {
+            await getDoc(doc(db, "DeletedUsers", `${user.uid}`)).then(
+              (snapshot) => {
+                alert(
+                  `Your account was deleted on ${snapshot.get(
+                    "DeleteDate"
+                  )}, please login with a different account`
+                );
+              }
+            );
+            await logOut();
+          } else {
+            const adminAccount = await getDoc(doc(db, "Admins", `${user.uid}`));
+            if (adminAccount.exists()) {
+              await getDoc(doc(db, "Admins", `${user.uid}`)).then(
+                (snapshot) => {
+                  if (snapshot.get("Admin") === true) {
+                    setAdminAccount(true);
+                  }
+                }
+              );
+            }
+            return navigate("/dashboard");
+          }
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    fetchUsers();
+  }, [user]);
 
   return (
     <div className="login-wrapper">
