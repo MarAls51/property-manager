@@ -51,7 +51,7 @@ export const Dashboard = () => {
         }
       };
 
-      if (Object.keys(user).length > 0) {
+      if (user) {
         fetchUserData();
       }
     },
@@ -83,7 +83,7 @@ export const Dashboard = () => {
         }
       };
 
-      if (Object.keys(user).length > 0) {
+      if (user) {
         fetchUsers();
       }
     },
