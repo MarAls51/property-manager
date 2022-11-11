@@ -10,6 +10,8 @@ export const CustomNav = () => {
     setUserData,
     setItemsCount,
     setItemsValue,
+    setUsersData,
+    setUsersCount,
     adminAccount,
     setAdminMode,
     adminMode,
@@ -23,6 +25,8 @@ export const CustomNav = () => {
       setItemsCount(0);
       setItemsValue(0);
       setUserData([]);
+      setUsersData([]);
+      setUsersCount(0);
     } catch (error) {
       console.log(error.message);
     }
