@@ -23,6 +23,14 @@ const Login = () => {
         alert(`Your account was deleted on ${snapshot.get("DeleteDate")}, please login with a different account`);
        });
     }  else {
+      const adminAccount = await getDoc(doc(db, "Admins", `${resp.user.uid}`));
+        if (adminAccount.exists()){
+        await getDoc(doc(db, "Admins", `${resp.user.uid}`)).then((snapshot) => {
+        if (snapshot.get("Admin") === true) {
+          setAdminAccount(true);
+        }
+      });
+      }
       return navigate("/dashboard");
     }
     });
@@ -42,24 +50,6 @@ const Login = () => {
       console.log(err);
     }
   };
-
-
-  useEffect(
-    () => {
-      const handleAdminAccount = async () => {
-        if (user) {
-          await getDoc(doc(db, "Admins", `${user.uid}`)).then((snapshot) => {
-            console.log(snapshot.data());
-            if (snapshot.get("Admin") === true) {
-              setAdminAccount(true);
-            }
-          });
-        } 
-      };
-      handleAdminAccount();
-    }, // eslint-disable-next-line
-    [user]
-  );
 
   return (
     <div className="login-wrapper">
