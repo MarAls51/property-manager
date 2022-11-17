@@ -29,6 +29,7 @@ export const CustomNav = () => {
       setUserData([]);
       setUsersData([]);
       setUsersCount(0);
+      navigate("/");
     } catch (error) {
       console.log(error.message);
     }
@@ -43,7 +44,6 @@ export const CustomNav = () => {
             <Nav.Link
               onClick={() => {
                 handleLogout();
-                navigate("/");
               }}
             >
               Logout
