@@ -1,10 +1,12 @@
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
+import { useNavigate } from "react-router-dom";
 import { useUserAuth } from "../../Context/UserAuthContext";
 import "./Navbar.css";
 
 export const CustomNav = () => {
+  const navigate = useNavigate();
   const {
     logOut,
     setUserData,
@@ -41,9 +43,24 @@ export const CustomNav = () => {
             <Nav.Link
               onClick={() => {
                 handleLogout();
+                navigate("/");
               }}
             >
               Logout
+            </Nav.Link>
+            <Nav.Link
+              onClick={() => {
+                navigate("/messages");
+              }}
+            >
+              Messages
+            </Nav.Link>
+            <Nav.Link
+              onClick={() => {
+                navigate("/dashboard");
+              }}
+            >
+              Dashboard
             </Nav.Link>
             {adminAccount && (
               <Nav.Link
