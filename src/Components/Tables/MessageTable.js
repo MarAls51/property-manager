@@ -1,20 +1,24 @@
 import { useUserAuth } from "../../Context/UserAuthContext";
 import { usePagination, useTable } from "react-table";
 import { useMemo } from "react";
-import { getDocs, orderBy, deleteDoc, doc, setDoc } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  addDoc,
+  collection,
+  serverTimestamp,
+} from "firebase/firestore";
 import { useGlobalFilter } from "react-table";
 import { db } from "../../Context/firebase";
-import { collection } from "firebase/firestore";
 import { usersColumns } from "./UsersColumns";
 import "./Table.css";
 import { useSortBy } from "react-table";
 import { GlobalFilter } from "./GlobalFIlter";
 import { useState } from "react";
 import { propertyColumns } from "./PropertyColumns";
-import { jsPDF } from "jspdf";
-export const UsersTable = () => {
-  const { usersData, userDataUpdated, setUserDataUpdated} =
-    useUserAuth();
+
+export const MessageTable = (props) => {
+  const { user, usersData, adminAccount } = useUserAuth();
   const [selectedUsersData, setSelectedUsersData] = useState();
   const columns = useMemo(() => {
     if (selectedUsersData) {
@@ -75,72 +79,44 @@ export const UsersTable = () => {
     });
   };
 
-
-  async function handleDeleteUser(id) {
+  const handleMessage = async (id) => {
     try {
-      const query = await doc(db, "Users", `${id}`);
-      await deleteDoc(query);
-      const date = new Date()
-     setDoc(doc(db, "DeletedUsers", `${id}`), {
-        DeleteDate: date.toString(),
+      const docCollection1 = adminAccount ? "Admins" : "Users";
+      const docRef = await doc(db, docCollection1, `${user.uid}`);
+      const colRef = await collection(docRef, "Messages");
+      const date = await new Date();
+
+      await addDoc(colRef, {
+        text: `${user.uid} opened a conversation on ${date.toString()}`,
+        createdAt: new Date(),
+        uid: user.uid,
+        id: id,
+        type: "Console",
       });
-      setUserDataUpdated(!userDataUpdated);
-    } catch (error) {
-      console.log(error.message);
-    }
-    return;
-  }
 
-
-  async function handleDownloadUser(id) {
-    try {
-      const data = await getDocs(
-        collection(db, "Users", `${id}`, "Personal Items"),
-        orderBy("Name", "asc")
-      );
-      const items = await Promise.all(
-        data.docs.map(async (doc) => {
-          return {
-            ...doc.data(),
-            id: doc.id,
-          };
-        })
-      );
-      items.push({UserId: id});
-      const doc = new jsPDF()
-      doc.setFontSize(10);
-      for(let i = 0; i < items.length ; i++) {
-        doc.text(JSON.stringify(items[i]), 20, 10 + i * 5);
+      let docCollection2 = "Users";
+      const data = await getDoc(doc(db, "Admins", `${id}`));
+      if (data.exists()) {
+        docCollection2 = "Admins";
       }
-      doc.save("a4.pdf");
+      const docRef2 = await doc(db, docCollection2, `${id}`);
+      const colRef2 = await collection(docRef2, "Messages");
+      await addDoc(colRef2, {
+        text: `${user.uid} opened a conversation on ${date.toString()}`,
+        createdAt: new Date(),
+        uid: id,
+        id: user.uid,
+        type: "Console",
+      });
+
+      props.setSelectedItem({usersType: docCollection2,id:id});
+      props.setMessaging(true);
+      props.setViewing(false);
     } catch (error) {
       console.log(error.message);
     }
     return;
-  }
-
-  async function handleViewItem(id) {
-    try {
-      const data = await getDocs(
-        collection(db, "Users", `${id}`, "Personal Items"),
-        orderBy("Name", "asc")
-      );
-      const items = await Promise.all(
-        data.docs.map(async (doc) => {
-          return {
-            ...doc.data(),
-            id: doc.id,
-          };
-        })
-      );
-      await setSelectedUsersData(items);
-    } catch (error) {
-      console.log(error.message);
-    }
-
-
-    
-  }
+  };
 
   return (
     <>
@@ -179,37 +155,21 @@ export const UsersTable = () => {
                         }}
                         {...cell.getCellProps()}
                       >
-                       {cell.column.Header === "Price" && "$"}
+                        {cell.column.Header === "Price" && "$"}
                         {cell.render("Cell")}
                       </td>
                     );
                   })}
                   <td>
-                    {!selectedUsersData && (
-                      <>
-                        <button
-                          onClick={() => {
-                            handleViewItem(row.original.id);
-                          }}
-                        >
-                          View
-                        </button>
-                        <button
-                          onClick={() => {
-                            handleDeleteUser(row.original.id);
-                          }}
-                        >
-                          Delete
-                        </button>
-                        <button
-                          onClick={() => {
-                            handleDownloadUser(row.original.id);
-                          }}
-                        >
-                          Download
-                        </button>
-                      </>
-                    )}
+                    <>
+                      <button
+                        onClick={() => {
+                          handleMessage(row.original.id);
+                        }}
+                      >
+                        Message
+                      </button>
+                    </>
                   </td>
                 </tr>
               </>
