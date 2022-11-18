@@ -8,7 +8,7 @@ import { useUserAuth } from "../../Context/UserAuthContext";
 import { CustomFooter } from "../../Components/Footer/Footer";
 import { Users } from "../../Components/Users/Users";
 export const AccessedProperty = () => {
-  const { user, userDataUpdated, adminAccount, setUsersData } = useUserAuth();
+  const { user, usersData, userDataUpdated, adminAccount, setUsersData } = useUserAuth();
 
   useEffect(
     () => {
@@ -47,13 +47,9 @@ export const AccessedProperty = () => {
 
   return (
     <>
-      <CustomNav></CustomNav>
-      <div className="dashboard-wrapper pt-5 pb-5">
-        <div className="container">
-              <Users />       
-        </div>
-      </div>
-      <CustomFooter></CustomFooter>
+    
+              {usersData && <Users />}       
+     
     </>
   );
 };

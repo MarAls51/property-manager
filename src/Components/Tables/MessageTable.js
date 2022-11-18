@@ -10,6 +10,11 @@ import { useSortBy } from "react-table";
 import { GlobalFilter } from "./GlobalFIlter";
 import { useState } from "react";
 import { propertyColumns } from "./PropertyColumns";
+import back from "../../Assets/backarrow.svg";
+import forward from "../../Assets/forwardarrow.svg";
+import message from "../../Assets/mail.svg";
+import grant from "../../Assets/unlock.svg";
+import revoke from "../../Assets/lock.svg";
 
 export const MessageTable = (props) => {
   const { user, usersData, adminAccount, email } = useUserAuth();
@@ -211,22 +216,37 @@ export const MessageTable = (props) => {
                         onClick={() => {
                           handleMessage(row.original.id);
                         }}
+                        style={{
+                          backgroundColor: "inherit",
+                          border: "none",
+                          outline: "none",
+                        }}
                       >
-                        Message
+                        <img src={message}/>
                       </button>
                      {!adminAccount && <button
                         onClick={() => {
                           grantAccess(row.original.id);
                         }}
+                        style={{
+                          backgroundColor: "inherit",
+                          border: "none",
+                          outline: "none",
+                        }}
                       >
-                        Grant Access 
+                        <img src={grant}/>
                       </button>}
                       {!adminAccount && <button
                         onClick={() => {
                           revokeAccess(row.original.id);
                         }}
+                        style={{
+                          backgroundColor: "inherit",
+                          border: "none",
+                          outline: "none",
+                        }}
                       >
-                       Revoke Access
+                      <img src={revoke}/>
                       </button> }
                     </>
                   </td>
@@ -237,30 +257,43 @@ export const MessageTable = (props) => {
           {page.length < 10 && <Test length={page.length} />}
         </tbody>
       </table>
-      <div className="text-center">
-        <span>
-          Page {state.pageIndex + 1} of{" "}
-          {pageOptions.length !== 0 && pageOptions.length}{" "}
-          {pageOptions.length === 0 && 1}
-        </span>
-      </div>
-      <div className="text-center">
-        <button
-          onClick={() => {
-            previousPage();
-          }}
-          disabled={!canPreviousPage}
-        >
-          Previous
-        </button>
-        <button
-          onClick={() => {
-            nextPage();
-          }}
-          disabled={!canNextPage}
-        >
-          Next
-        </button>
+      <div className="p-3" style={{ backgroundColor: "#a7a4e0" }}>
+        <div className="text-center"></div>
+        <div className="text-center">
+          <button
+            style={{
+              backgroundColor: "#a7a4e0",
+              border: "none",
+              outline: "none",
+              visibility: !canPreviousPage ? "hidden" : "visible",
+            }}
+            onClick={() => {
+              previousPage();
+            }}
+            disabled={!canPreviousPage}
+          >
+            <img src={back} />
+          </button>
+          <span>
+            Page {state.pageIndex + 1} of{" "}
+            {pageOptions.length !== 0 && pageOptions.length}{" "}
+            {pageOptions.length === 0 && 1}
+          </span>
+          <button
+            style={{
+              backgroundColor: "#a7a4e0",
+              border: "none",
+              outline: "none",
+              visibility: !canNextPage ? "hidden" : "visible",
+            }}
+            onClick={() => {
+              nextPage();
+            }}
+            disabled={!canNextPage}
+          >
+            <img src={forward} />
+          </button>
+        </div>
       </div>
     </>
   );

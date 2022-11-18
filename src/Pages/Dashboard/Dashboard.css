@@ -3,7 +3,7 @@
   background-color: #b2b4b2;
   display: flex;
   flex-direction: column;
-  min-width: 320px;
+  min-width: 360px;
   justify-content: center;
 }
 
@@ -13,4 +13,56 @@
   background-color: white;
   justify-content: center;
   border-radius: 5px;
+}
+
+.dashboard-button{
+  width: 100%;
+  aspect-ratio: 1/1;
+}
+
+.login-btn {
+  color: black;
+  background-color: #a7a4e0;
+  border-color: #a7a4e0;
+  outline: none;
+}
+
+.login-btn:hover {
+  color: black;
+  background-color: #8c88e0;
+  border-color: #8c88e0;
+}
+
+.login-btn:focus,
+.login-btn.focus {
+  box-shadow: 0 0 0 .2rem #8c88e0;
+  background-color: #8c88e0;
+  border-color: #8c88e0;
+  color: black;
+}
+
+.login-btn.disabled,
+.login-btn:disabled {
+  color: #212529;
+  background-color: gray;
+  border-color: gray
+}
+
+.login-btn:not(:disabled):not(.disabled):active,
+.login-btn:not(:disabled):not(.disabled).active,
+.show>.login-btn.dropdown-toggle {
+  color: black;
+  background-color: #8c88e0;
+  border-color: #8c88e0;
+}
+
+.btn-outline-primary {
+  color: #a7a4e0;
+  background-color: transparent;
+  background-image: none;
+  border-color: #a7a4e0;
+}
+
+.login-link{
+  text-decoration: none;
 }

@@ -8,7 +8,7 @@ export const Users = () => {
 
 
   return (
-    <div className="row mt-5">
+   
       <div className="col-12">
         <h2 style={{ color: "#4f43ae", fontWeight: "bold" }}>Items</h2>
         <div className="row">
@@ -20,6 +20,5 @@ export const Users = () => {
           </div>
         </div>
       </div>
-    </div>
   );
 };

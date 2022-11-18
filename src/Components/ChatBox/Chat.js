@@ -8,7 +8,7 @@ export const Chat = () => {
   const [selectedItem, setSelectedItem] = useState({})
 
   return (
-    <div className="row mt-5">
+    <div className="row">
       <div className="col-12">
         <h2 style={{ color: "#4f43ae", fontWeight: "bold" }}>Users</h2>
         <div className="row">

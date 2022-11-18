@@ -1,20 +1,21 @@
 import { useUserAuth } from "../../Context/UserAuthContext";
 import { PropertyTable } from "../Tables/PropertyTable";
+import add from "../../Assets/add.svg"
 export const DisplayItems = (props) => {
   const { userData } = useUserAuth();
   return (
     <>
-      <div className="row">
-        <div className="col-12 text-end">
-          <button
+      
+        <div className="text-end"style={{backgroundColor: " #a7a4e0"}}>
+          <button style={{backgroundColor: "#a7a4e0", border: "none", outline: "none"}}
             onClick={() => {
               props.setAdding(true);
             }}
           >
-            Add Item
+            <img src={add}></img>
           </button>
         </div>
-      </div>
+     
       {userData && <PropertyTable setSelectedItem={props.setSelectedItem} setEditing={props.setEditing} />}
     </>
   );

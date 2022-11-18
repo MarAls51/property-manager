@@ -6,6 +6,7 @@ import Login from "./Pages/Login/Login";
 import { Dashboard } from "./Pages/Dashboard/Dashboard";
 import { Message } from "./Pages/Message/Message";
 import { AccessedProperty } from "./Pages/AccessedProperty/AccessedProperty";
+import { DashboardRedesign } from "./Pages/Dashboard/DashboardRedesign";
 function App() {
   return (
     <UserAuthContextProvider>
@@ -15,7 +16,7 @@ function App() {
             path="/dashboard"
             element={
               <ProtectedRoute>
-                <Dashboard />
+                <DashboardRedesign />
               </ProtectedRoute>
             }
           />
