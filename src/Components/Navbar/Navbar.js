@@ -55,7 +55,7 @@ export const CustomNav = () => {
                 navigate("/messages");
               }}
             >
-              Messages
+              Users
             </Nav.Link>
             <Nav.Link
               onClick={() => {
