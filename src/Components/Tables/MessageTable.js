@@ -1,13 +1,7 @@
 import { useUserAuth } from "../../Context/UserAuthContext";
 import { usePagination, useTable } from "react-table";
 import { useMemo } from "react";
-import {
-  doc,
-  getDoc,
-  addDoc,
-  collection,
-  serverTimestamp,
-} from "firebase/firestore";
+import { doc, getDoc, getDocs, deleteDoc, addDoc, collection } from "firebase/firestore";
 import { useGlobalFilter } from "react-table";
 import { db } from "../../Context/firebase";
 import { usersColumns } from "./UsersColumns";
@@ -18,8 +12,11 @@ import { useState } from "react";
 import { propertyColumns } from "./PropertyColumns";
 
 export const MessageTable = (props) => {
-  const { user, usersData, adminAccount, email} = useUserAuth();
+  const { user, usersData, adminAccount, email } = useUserAuth();
+
+  const [access, setAccess] = useState(true);
   const [selectedUsersData, setSelectedUsersData] = useState();
+
   const columns = useMemo(() => {
     if (selectedUsersData) {
       return propertyColumns;
@@ -109,12 +106,60 @@ export const MessageTable = (props) => {
         type: "Console",
       });
 
-      props.setSelectedItem({usersType: docCollection2,id:id});
+      props.setSelectedItem({ usersType: docCollection2, id: id });
       props.setMessaging(true);
       props.setViewing(false);
     } catch (error) {
       console.log(error.message);
     }
+    return;
+  };
+
+  const grantAccess = async (id) => {
+    try {
+      const docRef2 = await doc(db, "Users", `${id}`);
+      const colRef2 = await collection(docRef2, "AccessedAccounts");
+      const query = await getDocs(await collection(docRef2, "AccessedAccounts"));
+      let queryExists = false;
+      query.forEach(async (document) => {
+      if(document.data().id === user.uid){
+        console.log("Already has access");
+        queryExists = true;
+        return;
+        }
+      });
+      if(queryExists){
+        return;
+      }
+      
+        await addDoc(colRef2, {
+          Email: email,
+          User: true,
+          id: user.uid,
+        });
+        console.log("Access Granted");
+    } catch (error) {
+      console.log(error.message);
+    }
+    setAccess(!access);
+    return;
+  };
+
+  const revokeAccess = async (id) => {
+    try {
+      const docRef2 = await doc(db, "Users", `${id}`);
+      const colRef2 = await collection(docRef2, "AccessedAccounts");
+        const query = await getDocs(await collection(docRef2, "AccessedAccounts"));
+        query.forEach(async (document) => {
+        if(document.data().id === user.uid){
+          await deleteDoc(doc(colRef2, document.id));
+          }
+        });
+        console.log("Access Revoked");
+    } catch (error) {
+      console.log(error.message);
+    }
+    setAccess(!access);
     return;
   };
 
@@ -169,6 +214,20 @@ export const MessageTable = (props) => {
                       >
                         Message
                       </button>
+                     {!adminAccount && <button
+                        onClick={() => {
+                          grantAccess(row.original.id);
+                        }}
+                      >
+                        Grant Access 
+                      </button>}
+                      {!adminAccount && <button
+                        onClick={() => {
+                          revokeAccess(row.original.id);
+                        }}
+                      >
+                       Revoke Access
+                      </button> }
                     </>
                   </td>
                 </tr>

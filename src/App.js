@@ -5,6 +5,7 @@ import { UserAuthContextProvider } from "./Context/UserAuthContext";
 import Login from "./Pages/Login/Login";
 import { Dashboard } from "./Pages/Dashboard/Dashboard";
 import { Message } from "./Pages/Message/Message";
+import { AccessedProperty } from "./Pages/AccessedProperty/AccessedProperty";
 function App() {
   return (
     <UserAuthContextProvider>
@@ -19,6 +20,7 @@ function App() {
             }
           />
            <Route path="/messages" element={<Message/>} />
+           <Route path="/accessUsers" element={<AccessedProperty />} />
       </Routes>
     </UserAuthContextProvider>
   );

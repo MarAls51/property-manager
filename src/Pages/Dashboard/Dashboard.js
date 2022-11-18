@@ -72,7 +72,7 @@ export const Dashboard = () => {
                 return {
                   ...doc.data(),
                   id: doc.id,
-                  email: doc.data().Email
+                  email: doc.data().Email,
                 };
               })
             );
@@ -98,12 +98,6 @@ export const Dashboard = () => {
       <CustomNav></CustomNav>
       <div className="dashboard-wrapper pt-5 pb-5">
         <div className="container">
-          {!adminAccount && !adminMode && (
-            <>
-              <PropertyOverview></PropertyOverview>
-              <Items></Items>
-            </>
-          )}
           {adminAccount && !adminMode && (
             <>
               <PropertyOverview></PropertyOverview>
@@ -115,6 +109,12 @@ export const Dashboard = () => {
             <>
               <UsersOverview />
               <Users />
+            </>
+          )}
+           {!adminAccount && (
+            <>
+              <PropertyOverview></PropertyOverview>
+              <Items></Items>
             </>
           )}
         </div>

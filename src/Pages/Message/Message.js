@@ -24,6 +24,7 @@ export const Message = () => {
               };
             })
           );
+          let accessedAccountList = [];
           let adminAccounts = [];
           if (adminAccount !== true) {
             const data2 = await getDocs(collection(db, "Admins"));
@@ -39,6 +40,11 @@ export const Message = () => {
             );
           }
           let allUsers = userAccounts;
+          for(let i = 0; i < allUsers.length; i++){
+            if(allUsers[i].id === user.uid){
+              allUsers.splice(i, 1);
+            }
+          }
           if(adminAccount !== true){
           allUsers = userAccounts.concat(adminAccounts);
           }
