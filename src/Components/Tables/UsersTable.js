@@ -13,7 +13,7 @@ import { useState } from "react";
 import { propertyColumns } from "./PropertyColumns";
 import { jsPDF } from "jspdf";
 export const UsersTable = () => {
-  const { usersData, userDataUpdated, setUserDataUpdated} =
+  const { usersData, userDataUpdated, setUserDataUpdated, adminAccount} =
     useUserAuth();
   const [selectedUsersData, setSelectedUsersData] = useState();
   const columns = useMemo(() => {
@@ -194,13 +194,13 @@ export const UsersTable = () => {
                         >
                           View
                         </button>
-                        <button
+                       {adminAccount && <button
                           onClick={() => {
                             handleDeleteUser(row.original.id);
                           }}
                         >
                           Delete
-                        </button>
+                        </button>}
                         <button
                           onClick={() => {
                             handleDownloadUser(row.original.id);

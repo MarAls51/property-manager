@@ -74,6 +74,15 @@ export const CustomNav = () => {
                 {!adminMode && <span>UserMode</span>}
               </Nav.Link>
             )}
+            {!adminAccount && (
+               <Nav.Link
+               onClick={() => {
+                 navigate("/accessUsers");
+               }}
+             >
+               AccessUsers
+             </Nav.Link>
+            )}
           </Nav>
         </Navbar.Collapse>
       </Container>
