@@ -14,6 +14,7 @@ export function UserAuthContextProvider({ children }) {
   const [user, setUser] = useState();
   const [usersData, setUsersData] = useState();
   const [usersCount, setUsersCount] = useState();
+  const [email, setEmail] = useState();
   const [adminMode, setAdminMode] = useState(false);
   const [adminAccount, setAdminAccount] = useState(false);
   const [userData, setUserData] = useState();
@@ -48,6 +49,8 @@ export function UserAuthContextProvider({ children }) {
         signUp,
         logOut,
         userData,
+        email,
+        setEmail,
         setUserData,
         setUserDataUpdated,
         userDataUpdated,

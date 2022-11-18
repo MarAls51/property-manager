@@ -7,16 +7,16 @@ import { db } from "../../Context/firebase";
 import "./Login.css";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { logIn, signUp, user, setAdminAccount, logOut } = useUserAuth();
+  const { logIn, signUp, user, setAdminAccount, logOut, email, setEmail} = useUserAuth();
   const [flag, setFlag] = useState(true);
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      await logIn(email, password)
+      await logIn(email, password);
+      await setEmail(email);
     } catch (err) {
       console.log(err);
     }
@@ -28,6 +28,7 @@ const Login = () => {
       await signUp(email, password).then((resp) => {
         setDoc(doc(db, "Users", `${resp.user.uid}`), {
           User: true,
+          Email: email,
         });
       });
     } catch (err) {

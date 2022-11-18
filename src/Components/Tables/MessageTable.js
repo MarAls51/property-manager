@@ -18,7 +18,7 @@ import { useState } from "react";
 import { propertyColumns } from "./PropertyColumns";
 
 export const MessageTable = (props) => {
-  const { user, usersData, adminAccount } = useUserAuth();
+  const { user, usersData, adminAccount, email} = useUserAuth();
   const [selectedUsersData, setSelectedUsersData] = useState();
   const columns = useMemo(() => {
     if (selectedUsersData) {
@@ -87,7 +87,7 @@ export const MessageTable = (props) => {
       const date = await new Date();
 
       await addDoc(colRef, {
-        text: `${user.uid} opened a conversation on ${date.toString()}`,
+        text: `${email} opened a conversation on ${date.toString()}`,
         createdAt: new Date(),
         uid: user.uid,
         id: id,
@@ -102,7 +102,7 @@ export const MessageTable = (props) => {
       const docRef2 = await doc(db, docCollection2, `${id}`);
       const colRef2 = await collection(docRef2, "Messages");
       await addDoc(colRef2, {
-        text: `${user.uid} opened a conversation on ${date.toString()}`,
+        text: `${email} opened a conversation on ${date.toString()}`,
         createdAt: new Date(),
         uid: id,
         id: user.uid,
