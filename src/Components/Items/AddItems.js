@@ -10,6 +10,7 @@ export const AddItems = (props) => {
    
   
     const handleAddItem = async (e) => {
+       e.preventDefault();
         if(name !== "" && !isNaN(price))
         try {
             const query = await doc(db, "Users", `${user.uid}`);
@@ -28,15 +29,16 @@ export const AddItems = (props) => {
 
   return (
    <>
-              <div className="row">
+              <div className="p-3" style={{backgroundColor: "white"}}>
                 <span onClick={()=>{props.setAdding(false)}}>Back</span>
-              <Form>
+              <Form onSubmit={handleAddItem}>
                     <Form.Group className="mb-3" controlId="formBasicName">
                       <label for="formBasicName">Item Name</label>
                       <Form.Control
                         type="text"
                         placeholder="Item Name"
                         onChange={(e) => setName(e.target.value)}
+                        required
                       />
                     </Form.Group>
 
@@ -46,14 +48,16 @@ export const AddItems = (props) => {
                         type="text"
                         placeholder="Price"
                         onChange={(e) => setPrice(e.target.value)}
+                        required
                       />
                     </Form.Group>
-                  </Form>
-                  <div className="d-grid">
-                      <button onClick={handleAddItem} className="mb-4 btn login-btn" type="Submit">
+                    <div className="d-grid">
+                      <button className="mb-4 btn login-btn" type="Submit">
                         Add Item
                       </button>
                     </div>
+                  </Form>
+                 
               </div>
               
 </>

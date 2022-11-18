@@ -13,10 +13,10 @@ export const Users = () => {
         <h2 style={{ color: "#4f43ae", fontWeight: "bold" }}>Items</h2>
         <div className="row">
           <div className="col">
-            <div className="dashboard-box p-2 pt-3 pb-3" style={{minHeight: "792px"}}>
+          
               {(!adding) && <DisplayUsers  setAdding={setAdding} />}
               {( adding) && <AddItems setAdding={setAdding} />}
-            </div>
+        
           </div>
         </div>
       </div>

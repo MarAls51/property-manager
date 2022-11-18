@@ -10,7 +10,7 @@ export const EditItems = (props) => {
 
   return (
     <>
-      <div className="row">
+   <div className="p-3" style={{ backgroundColor: "white" }}>
         <span
           onClick={() => {
             props.setEditing(false);

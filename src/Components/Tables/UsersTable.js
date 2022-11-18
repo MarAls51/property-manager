@@ -74,7 +74,7 @@ export const UsersTable = () => {
         <tr>
           <td>-</td>
           <td>-</td>
-          {selectedUsersData && <td>-</td>}
+          
         </tr>
       );
     });
@@ -150,6 +150,9 @@ export const UsersTable = () => {
   return (
     <>
       {selectedUsersData && (
+        <div style={{
+          backgroundColor: "#a7a4e0",
+        }} className="p-2">
         <span
           onClick={() => {
             setSelectedUsersData();
@@ -157,6 +160,7 @@ export const UsersTable = () => {
         >
           Back
         </span>
+        </div>
       )}
       <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
       <table {...getTableProps()}>
@@ -166,7 +170,8 @@ export const UsersTable = () => {
               {headerGroup.headers.map((column) => (
                 <th {...column.getHeaderProps()}>{column.render("Header")}</th>
               ))}
-              <th>Actions</th>
+               {!selectedUsersData &&
+              <th>Actions</th>}
             </tr>
           ))}
         </thead>
@@ -189,8 +194,9 @@ export const UsersTable = () => {
                       </td>
                     );
                   })}
+                     {!selectedUsersData && 
                   <td>
-                    {!selectedUsersData && (
+                 
                       <>
                         <button
                           onClick={() => {
@@ -229,8 +235,8 @@ export const UsersTable = () => {
                          <img src={download}/>
                         </button>
                       </>
-                    )}
-                  </td>
+                  
+                  </td>}
                 </tr>
               </>
             );
