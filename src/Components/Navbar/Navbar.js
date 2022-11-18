@@ -14,6 +14,7 @@ export const CustomNav = () => {
     setItemsValue,
     setUsersData,
     setUsersCount,
+    setEmail,
     adminAccount,
     setAdminMode,
     adminMode,
@@ -27,6 +28,7 @@ export const CustomNav = () => {
       setItemsCount(0);
       setItemsValue(0);
       setUserData([]);
+      setEmail("");
       setUsersData([]);
       setUsersCount(0);
       navigate("/");

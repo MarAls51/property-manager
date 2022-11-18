@@ -46,7 +46,7 @@ export const UsersTable = () => {
       initialState: {
         sortBy: [
           {
-            id: "id",
+            id: "email",
             desc: false,
           },
         ],

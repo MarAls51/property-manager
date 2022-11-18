@@ -72,6 +72,7 @@ export const Dashboard = () => {
                 return {
                   ...doc.data(),
                   id: doc.id,
+                  email: doc.data().Email
                 };
               })
             );
