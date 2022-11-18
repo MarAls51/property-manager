@@ -15,7 +15,7 @@ export const Users = () => {
           <div className="col">
           
               {(!adding) && <DisplayUsers  setAdding={setAdding} />}
-              {( adding) && <AddItems setAdding={setAdding} />}
+             
         
           </div>
         </div>

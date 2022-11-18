@@ -21,17 +21,7 @@ export const Menu = () => {
 
   return (
     <>
-      
-        {adminAccount && (
-          <div className="row justify-content-center align-items-center">
-            <div className="col-6 mb-3">
-              <button className="dashboard-button login-btn btn">
-                <img src={admin}></img>
-                <h3>Admin</h3>
-              </button>
-            </div>
-          </div>
-        )}
+    
         <div className="row justify-content-center align-items-center">
           <div className="col mb-3">
             <button
@@ -54,12 +44,27 @@ export const Menu = () => {
           </div>
         </div>
         <div className="row justify-content-center align-items-center">
+        {!adminAccount && 
           <div className="col  mb-3">
             <button onClick={()=>{setSelectedItem("shared")}} className="dashboard-button login-btn btn">
               <img src={shared}></img>
               <h3>Shared</h3>
             </button>
+       
           </div>
+           }
+            {adminAccount && (
+        
+        <div className="col-6 mb-3">
+          <button className="dashboard-button login-btn btn" onClick={() => {
+            setSelectedItem("admin");
+          }}>
+            <img src={admin}></img>
+            <h3>Admin</h3>
+          </button>
+        </div>
+   
+    )}
           <div className="col  mb-3">
             <button className="dashboard-button login-btn btn">
               <img src={account}></img>

@@ -17,6 +17,7 @@ import forward from "../../Assets/forwardarrow.svg";
 import view from "../../Assets/view.svg";
 import trash from "../../Assets/trash.svg";
 import download from "../../Assets/download.svg";
+
 export const UsersTable = () => {
   const { usersData, userDataUpdated, setUserDataUpdated, adminAccount} =
     useUserAuth();
@@ -153,13 +154,18 @@ export const UsersTable = () => {
         <div style={{
           backgroundColor: "#a7a4e0",
         }} className="p-2">
-        <span
-          onClick={() => {
-            setSelectedUsersData();
-          }}
-        >
-          Back
-        </span>
+        <button
+            style={{
+              backgroundColor: "#a7a4e0",
+              border: "none",
+              outline: "none",
+            }}
+            onClick={() => {
+             setSelectedUsersData();
+            }}
+          >
+            <img src={back} />
+          </button>
         </div>
       )}
       <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />

@@ -8,7 +8,7 @@ import { useUserAuth } from "../../Context/UserAuthContext";
 import { CustomFooter } from "../../Components/Footer/Footer";
 import { Users } from "../../Components/Users/Users";
 export const AccessedProperty = () => {
-  const { user, usersData, userDataUpdated, adminAccount, setUsersData } = useUserAuth();
+  const { user, usersData, userDataUpdated, adminAccount, setUsersData, setUsersCount } = useUserAuth();
 
   useEffect(
     () => {
@@ -44,6 +44,41 @@ export const AccessedProperty = () => {
     // eslint-disable-next-line
     [user, userDataUpdated]
   );
+
+  useEffect(
+    () => {
+      const fetchUsers = async () => {
+        if (adminAccount) {
+          try {
+            const data = await getDocs(collection(db, "Users"));
+            var count = 0;
+            const items = await Promise.all(
+              data.docs.map(async (doc) => {
+                count++;
+                return {
+                  ...doc.data(),
+                  id: doc.id,
+                  email: doc.data().Email,
+                };
+              })
+            );
+            await setUsersCount(count);
+            await setUsersData(items);
+          } catch (error) {
+            console.log(error.message);
+          }
+        }
+      };
+
+      if (user) {
+        fetchUsers();
+      }
+    },
+
+    // eslint-disable-next-line
+    [user, userDataUpdated]
+  );
+  
 
   return (
     <>

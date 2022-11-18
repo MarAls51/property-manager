@@ -20,6 +20,7 @@ import { Menu } from "./Menu";
 import { PropertyTable } from "../../Components/Tables/PropertyTable";
 import { Message } from "../Message/Message";
 import { AccessedProperty } from "../AccessedProperty/AccessedProperty";
+import back from "../../Assets/backarrow.svg";
 export const DashboardRedesign = () => {
   const {
     user,
@@ -109,10 +110,23 @@ export const DashboardRedesign = () => {
       <div className="dashboard-wrapper pt-5 pb-5">
         <div className="container">
         {selectedItem === "" && <Menu />}
-        {selectedItem !== "" && <button onClick={()=>setSelectedItem("")}>{'<-'} Back</button>}
+        {selectedItem !== "" && <button
+            style={{
+              backgroundColor: "inherit",
+              border: "none",
+              outline: "none",
+            }}
+            onClick={() => {
+             setSelectedItem("");
+            }}
+          >
+            <img src={back} />
+          </button>}
         {selectedItem === "property" && <><PropertyOverview/><Items/></> }
         {selectedItem === "users" && <><Message/></> }
         {selectedItem === "shared" && <><AccessedProperty/></> }
+        {selectedItem === "admin" && <><UsersOverview />
+             <AccessedProperty/></> }
         </div>
       </div>
     </>
