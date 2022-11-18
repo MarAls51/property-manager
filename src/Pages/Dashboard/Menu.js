@@ -16,9 +16,26 @@ import property from "../../Assets/property.svg";
 import users from "../../Assets/users.svg";
 import shared from "../../Assets/shared.svg";
 import account from "../../Assets/account.svg";
+import { useNavigate } from "react-router-dom";
 export const Menu = () => {
-  const { adminAccount, setSelectedItem } = useUserAuth();
-
+  const { adminAccount, setSelectedItem, setEmail, setUserData, setUsersData, setItemsCount, setItemsValue, setUsersCount, logOut, setAdminMode, setAdminAccount } = useUserAuth();
+  const navigate = useNavigate()
+  const handleLogout = async () => {
+    try {
+      await logOut();
+      setAdminMode(false);
+      setAdminAccount(false);
+      setItemsCount(0);
+      setItemsValue(0);
+      setUserData([]);
+      setEmail("");
+      setUsersData([]);
+      setUsersCount(0);
+      navigate("/");
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
   return (
     <>
     
@@ -66,7 +83,7 @@ export const Menu = () => {
    
     )}
           <div className="col  mb-3">
-            <button className="dashboard-button login-btn btn">
+            <button className="dashboard-button login-btn btn" onClick={()=>{handleLogout()}}>
               <img src={account}></img>
               <h3>Account</h3>
             </button>
