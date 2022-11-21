@@ -1,7 +1,7 @@
 import { useUserAuth } from "../../Context/UserAuthContext";
 import { usePagination, useTable } from "react-table";
 import { useMemo } from "react";
-import { doc, deleteDoc } from "firebase/firestore";
+import { doc, deleteDoc, getDocs, orderBy} from "firebase/firestore";
 import { useGlobalFilter } from "react-table";
 import { db } from "../../Context/firebase";
 import { collection, getDoc } from "firebase/firestore";
@@ -13,6 +13,7 @@ import back from "../../Assets/backarrow.svg";
 import forward from "../../Assets/forwardarrow.svg";
 import trash from "../../Assets/trash.svg"
 import edit from "../../Assets/edit.svg"
+import { jsPDF } from "jspdf";
 
 export const PropertyTable = (props) => {
   const { userData, userDataUpdated, setUserDataUpdated, user } = useUserAuth();
@@ -68,6 +69,34 @@ export const PropertyTable = (props) => {
       );
     });
   };
+
+  async function handleDownloadItems() {
+    try {
+      const data = await getDocs(
+        collection(db, "Users", `${user.uid}`, "Personal Items"),
+        orderBy("Name", "asc")
+      );
+      const items = await Promise.all(
+        data.docs.map(async (doc) => {
+          return {
+            ...doc.data(),
+            id: doc.id,
+          };
+        })
+      );
+      items.push({UserId: user.uid});
+      const doc = new jsPDF()
+      doc.setFontSize(10);
+      for(let i = 0; i < items.length ; i++) {
+        doc.text(JSON.stringify(items[i]), 20, 10 + i * 5);
+      }
+      doc.save("a4.pdf");
+    } catch (error) {
+      console.log(error.message);
+    }
+    return;
+  }
+
 
   async function handleDeleteItem(id) {
     try {
@@ -158,6 +187,13 @@ export const PropertyTable = (props) => {
                       }}
                     >
                      <img src={trash}/>
+                    </button>
+                    <button
+                      onClick={() => {
+                        handleDownloadItems();
+                      }}
+                    >
+                      Download
                     </button>
                   </td>
                 </tr>
