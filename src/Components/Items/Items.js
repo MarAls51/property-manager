@@ -13,7 +13,7 @@ export const Items = () => {
         <h2 style={{ color: "#4f43ae", fontWeight: "bold" }}>Items</h2>
         <div className="row">
           <div className="col">
-            <div className="dashboard-box p-2 pt-3 pb-3" style={{minHeight: "792px"}}>
+            <div>
               {(!adding && !editing) && <DisplayItems setSelectedItem={setSelectedItem} setAdding={setAdding} setEditing={setEditing}  />}
               {( adding && !editing) && <AddItems setAdding={setAdding} />}
               {( !adding && editing) && <EditItems selectedItem={selectedItem} setEditing={setEditing}/>}

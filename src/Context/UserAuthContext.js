@@ -21,6 +21,7 @@ export function UserAuthContextProvider({ children }) {
   const [userDataUpdated, setUserDataUpdated] = useState();
   const [itemsCount, setItemsCount] = useState(0);
   const [itemsValue, setItemsValue] = useState(0);
+  const [selectedItem, setSelectedItem] = useState("")
   function logIn(email, password) {
     return signInWithEmailAndPassword(auth, email, password);
   }
@@ -59,7 +60,7 @@ export function UserAuthContextProvider({ children }) {
         itemsValue,
         usersCount, setUsersCount,
         setItemsValue,
-        adminMode, setAdminMode, adminAccount, setAdminAccount, usersData, setUsersData
+        adminMode, setAdminMode, adminAccount, setAdminAccount, usersData, setUsersData, selectedItem, setSelectedItem,
       }}
     >
       {children}

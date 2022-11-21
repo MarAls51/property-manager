@@ -8,7 +8,7 @@ import { useUserAuth } from "../../Context/UserAuthContext";
 import { CustomFooter } from "../../Components/Footer/Footer";
 import { Chat } from "../../Components/ChatBox/Chat";
 export const Message = () => {
-  const { user, userDataUpdated, adminAccount, setUsersData } = useUserAuth();
+  const { user, userDataUpdated, adminAccount, setUsersData, usersData } = useUserAuth();
 
   useEffect(
     () => {
@@ -66,15 +66,13 @@ export const Message = () => {
 
   return (
     <>
-      <CustomNav></CustomNav>
-      <div className="dashboard-wrapper pt-5 pb-5">
-        <div className="container">
+    
+    
           <>
-            <Chat></Chat>
+           {usersData && <Chat></Chat>}
           </>
-        </div>
-      </div>
-      <CustomFooter></CustomFooter>
+     
+    
     </>
   );
 };

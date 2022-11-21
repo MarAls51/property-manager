@@ -9,6 +9,7 @@ import {
   getDocs,
   serverTimestamp,
 } from "firebase/firestore";
+import back from "../../Assets/backarrow.svg";
 export const ChatBox = (props) => {
   const { adminAccount } = useUserAuth();
 
@@ -75,15 +76,24 @@ export const ChatBox = (props) => {
 
   return (
     <>
-      <div className="row">
-        <span
-          onClick={() => {
-            props.setViewing(true);
-            props.setMessaging(false);
-          }}
-        >
-          Back
-        </span>
+    <div style={{ backgroundColor: "white" }}>
+    <div className="p-3" style={{backgroundColor: "#a7a4e0"}}>
+    <button
+            style={{
+              backgroundColor: "#a7a4e0",
+              border: "none",
+              outline: "none",
+            }}
+            onClick={() => {
+              props.setViewing(true);
+              props.setMessaging(false);
+            }}
+          >
+            <img src={back} />
+          </button>
+        </div>
+        <div className="p-5">
+          <div style={{height: "500px", border: "1px solid black", overflowY: "scroll"}} className="p-3">
         {messages.map(({ type, text }) => (
           <div key={text}>
             <p>
@@ -91,6 +101,7 @@ export const ChatBox = (props) => {
             </p>
           </div>
         ))}
+        </div>
 
         <Form onSubmit={sendMesssage}>
           <Form.Group className="d-grid">
@@ -99,12 +110,14 @@ export const ChatBox = (props) => {
               value={formValue}
               onChange={(e) => setFormValue(e.target.value)}
               placeholder="Type your message here"
+              className="mb-4 mt-4"
             />
             <button className="mb-4 btn login-btn" type="Submit">
-              sendMesssage
+              Send
             </button>
           </Form.Group>
         </Form>
+      </div>
       </div>
     </>
   );

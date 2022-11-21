@@ -12,6 +12,12 @@ import { GlobalFilter } from "./GlobalFIlter";
 import { useState } from "react";
 import { propertyColumns } from "./PropertyColumns";
 import { jsPDF } from "jspdf";
+import back from "../../Assets/backarrow.svg";
+import forward from "../../Assets/forwardarrow.svg";
+import view from "../../Assets/view.svg";
+import trash from "../../Assets/trash.svg";
+import download from "../../Assets/download.svg";
+import autoTable from 'jspdf-autotable'
 export const UsersTable = () => {
   const { usersData, userDataUpdated, setUserDataUpdated, adminAccount} =
     useUserAuth();
@@ -69,7 +75,7 @@ export const UsersTable = () => {
         <tr>
           <td>-</td>
           <td>-</td>
-          {selectedUsersData && <td>-</td>}
+          
         </tr>
       );
     });
@@ -96,23 +102,30 @@ export const UsersTable = () => {
     try {
       const data = await getDocs(
         collection(db, "Users", `${id}`, "Personal Items"),
-        orderBy("Name", "asc")
+        orderBy("Name", "desc")
       );
+      var sum = 0
       const items = await Promise.all(
         data.docs.map(async (doc) => {
+          sum += doc.data().Price
           return {
-            ...doc.data(),
-            id: doc.id,
+            ...doc.data()
           };
         })
       );
-      items.push({UserId: id});
+      var outputData = items.map( ({ Name, Price }) => ([Name, Price]) );
       const doc = new jsPDF()
       doc.setFontSize(10);
-      for(let i = 0; i < items.length ; i++) {
-        doc.text(JSON.stringify(items[i]), 20, 10 + i * 5);
-      }
-      doc.save("a4.pdf");
+  
+      autoTable(doc, {
+        head: [['Name', 'Price (Dollars)']],
+        body: outputData.map((el) => {
+          return el;
+        }),
+        foot: [['Total', sum ]],
+        showFoot: "lastPage",
+      })
+      doc.save("Properties.pdf");
     } catch (error) {
       console.log(error.message);
     }
@@ -145,13 +158,22 @@ export const UsersTable = () => {
   return (
     <>
       {selectedUsersData && (
-        <span
-          onClick={() => {
-            setSelectedUsersData();
-          }}
-        >
-          Back
-        </span>
+        <div style={{
+          backgroundColor: "#a7a4e0",
+        }} className="p-2">
+        <button
+            style={{
+              backgroundColor: "#a7a4e0",
+              border: "none",
+              outline: "none",
+            }}
+            onClick={() => {
+             setSelectedUsersData();
+            }}
+          >
+            <img src={back} />
+          </button>
+        </div>
       )}
       <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
       <table {...getTableProps()}>
@@ -161,7 +183,8 @@ export const UsersTable = () => {
               {headerGroup.headers.map((column) => (
                 <th {...column.getHeaderProps()}>{column.render("Header")}</th>
               ))}
-              <th>Actions</th>
+               {!selectedUsersData &&
+              <th>Actions</th>}
             </tr>
           ))}
         </thead>
@@ -184,33 +207,49 @@ export const UsersTable = () => {
                       </td>
                     );
                   })}
+                     {!selectedUsersData && 
                   <td>
-                    {!selectedUsersData && (
+                 
                       <>
                         <button
                           onClick={() => {
                             handleViewItem(row.original.id);
                           }}
+                          style={{
+                            backgroundColor: "inherit",
+                            border: "none",
+                            outline: "none",
+                          }}
                         >
-                          View
+                         <img src={view}/>
                         </button>
                        {adminAccount && <button
                           onClick={() => {
                             handleDeleteUser(row.original.id);
                           }}
+                          style={{
+                            backgroundColor: "inherit",
+                            border: "none",
+                            outline: "none",
+                          }}
                         >
-                          Delete
+                          <img src={trash}/>
                         </button>}
                         <button
                           onClick={() => {
                             handleDownloadUser(row.original.id);
                           }}
+                          style={{
+                            backgroundColor: "inherit",
+                            border: "none",
+                            outline: "none",
+                          }}
                         >
-                          Download
+                         <img src={download}/>
                         </button>
                       </>
-                    )}
-                  </td>
+                  
+                  </td>}
                 </tr>
               </>
             );
@@ -218,30 +257,43 @@ export const UsersTable = () => {
           {page.length < 10 && <Test length={page.length} />}
         </tbody>
       </table>
-      <div className="text-center">
-        <span>
-          Page {state.pageIndex + 1} of{" "}
-          {pageOptions.length !== 0 && pageOptions.length}{" "}
-          {pageOptions.length === 0 && 1}
-        </span>
-      </div>
-      <div className="text-center">
-        <button
-          onClick={() => {
-            previousPage();
-          }}
-          disabled={!canPreviousPage}
-        >
-          Previous
-        </button>
-        <button
-          onClick={() => {
-            nextPage();
-          }}
-          disabled={!canNextPage}
-        >
-          Next
-        </button>
+      <div className="p-3" style={{ backgroundColor: "#a7a4e0" }}>
+        <div className="text-center"></div>
+        <div className="text-center">
+          <button
+            style={{
+              backgroundColor: "#a7a4e0",
+              border: "none",
+              outline: "none",
+              visibility: !canPreviousPage ? "hidden" : "visible",
+            }}
+            onClick={() => {
+              previousPage();
+            }}
+            disabled={!canPreviousPage}
+          >
+            <img src={back} />
+          </button>
+          <span>
+            Page {state.pageIndex + 1} of{" "}
+            {pageOptions.length !== 0 && pageOptions.length}{" "}
+            {pageOptions.length === 0 && 1}
+          </span>
+          <button
+            style={{
+              backgroundColor: "#a7a4e0",
+              border: "none",
+              outline: "none",
+              visibility: !canNextPage ? "hidden" : "visible",
+            }}
+            onClick={() => {
+              nextPage();
+            }}
+            disabled={!canNextPage}
+          >
+            <img src={forward} />
+          </button>
+        </div>
       </div>
     </>
   );

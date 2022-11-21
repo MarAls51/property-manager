@@ -4,12 +4,17 @@ import { useMemo } from "react";
 import { doc, deleteDoc, getDocs, orderBy} from "firebase/firestore";
 import { useGlobalFilter } from "react-table";
 import { db } from "../../Context/firebase";
-import { collection, getDoc} from "firebase/firestore";
+import { collection, getDoc } from "firebase/firestore";
 import { propertyColumns } from "./PropertyColumns";
 import "./Table.css";
 import { useSortBy } from "react-table";
 import { GlobalFilter } from "./GlobalFIlter";
+import back from "../../Assets/backarrow.svg";
+import forward from "../../Assets/forwardarrow.svg";
+import trash from "../../Assets/trash.svg"
+import edit from "../../Assets/edit.svg"
 import { jsPDF } from "jspdf";
+
 export const PropertyTable = (props) => {
   const { userData, userDataUpdated, setUserDataUpdated, user } = useUserAuth();
 
@@ -107,11 +112,17 @@ export const PropertyTable = (props) => {
 
   async function handleEditButton(id) {
     try {
-      const docRef = await doc(db, "Users", `${user.uid}`, "Personal Items", `${id}`);
-      const docSnap = await getDoc(docRef)
-      if (docSnap.exists){
-        props.setSelectedItem({...docSnap.data(), id: docSnap.id})
-        props.setEditing(true)
+      const docRef = await doc(
+        db,
+        "Users",
+        `${user.uid}`,
+        "Personal Items",
+        `${id}`
+      );
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists) {
+        props.setSelectedItem({ ...docSnap.data(), id: docSnap.id });
+        props.setEditing(true);
       }
     } catch (error) {
       console.log(error.message);
@@ -155,17 +166,27 @@ export const PropertyTable = (props) => {
                   <td>
                     <button
                       onClick={() => {
-                        handleEditButton(row.original.id)
+                        handleEditButton(row.original.id);
+                      }}
+                      style={{
+                        backgroundColor: "inherit",
+                        border: "none",
+                        outline: "none",
                       }}
                     >
-                      Edit
+                      <img src={edit}/>
                     </button>
                     <button
                       onClick={() => {
                         handleDeleteItem(row.original.id);
                       }}
+                      style={{
+                        backgroundColor: "inherit",
+                        border: "none",
+                        outline: "none",
+                      }}
                     >
-                      Delete
+                     <img src={trash}/>
                     </button>
                     <button
                       onClick={() => {
@@ -182,30 +203,43 @@ export const PropertyTable = (props) => {
           {page.length < 10 && <Test length={page.length} />}
         </tbody>
       </table>
-      <div className="text-center">
-        <span>
-          Page {state.pageIndex + 1} of{" "}
-          {pageOptions.length !== 0 && pageOptions.length}{" "}
-          {pageOptions.length === 0 && 1}
-        </span>
-      </div>
-      <div className="text-center">
-        <button
-          onClick={() => {
-            previousPage();
-          }}
-          disabled={!canPreviousPage}
-        >
-          Previous
-        </button>
-        <button
-          onClick={() => {
-            nextPage();
-          }}
-          disabled={!canNextPage}
-        >
-          Next
-        </button>
+      <div className="p-3" style={{ backgroundColor: "#a7a4e0" }}>
+        <div className="text-center"></div>
+        <div className="text-center">
+          <button
+            style={{
+              backgroundColor: "#a7a4e0",
+              border: "none",
+              outline: "none",
+              visibility: !canPreviousPage ? "hidden" : "visible",
+            }}
+            onClick={() => {
+              previousPage();
+            }}
+            disabled={!canPreviousPage}
+          >
+            <img src={back} />
+          </button>
+          <span>
+            Page {state.pageIndex + 1} of{" "}
+            {pageOptions.length !== 0 && pageOptions.length}{" "}
+            {pageOptions.length === 0 && 1}
+          </span>
+          <button
+            style={{
+              backgroundColor: "#a7a4e0",
+              border: "none",
+              outline: "none",
+              visibility: !canNextPage ? "hidden" : "visible",
+            }}
+            onClick={() => {
+              nextPage();
+            }}
+            disabled={!canNextPage}
+          >
+            <img src={forward} />
+          </button>
+        </div>
       </div>
     </>
   );
