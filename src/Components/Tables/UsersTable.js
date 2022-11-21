@@ -17,7 +17,7 @@ import forward from "../../Assets/forwardarrow.svg";
 import view from "../../Assets/view.svg";
 import trash from "../../Assets/trash.svg";
 import download from "../../Assets/download.svg";
-
+import autoTable from 'jspdf-autotable'
 export const UsersTable = () => {
   const { usersData, userDataUpdated, setUserDataUpdated, adminAccount} =
     useUserAuth();
@@ -102,23 +102,30 @@ export const UsersTable = () => {
     try {
       const data = await getDocs(
         collection(db, "Users", `${id}`, "Personal Items"),
-        orderBy("Name", "asc")
+        orderBy("Name", "desc")
       );
+      var sum = 0
       const items = await Promise.all(
         data.docs.map(async (doc) => {
+          sum += doc.data().Price
           return {
-            ...doc.data(),
-            id: doc.id,
+            ...doc.data()
           };
         })
       );
-      items.push({UserId: id});
+      var outputData = items.map( ({ Name, Price }) => ([Name, Price]) );
       const doc = new jsPDF()
       doc.setFontSize(10);
-      for(let i = 0; i < items.length ; i++) {
-        doc.text(JSON.stringify(items[i]), 20, 10 + i * 5);
-      }
-      doc.save("a4.pdf");
+  
+      autoTable(doc, {
+        head: [['Name', 'Price (Dollars)']],
+        body: outputData.map((el) => {
+          return el;
+        }),
+        foot: [['Total', sum ]],
+        showFoot: "lastPage",
+      })
+      doc.save("Properties.pdf");
     } catch (error) {
       console.log(error.message);
     }

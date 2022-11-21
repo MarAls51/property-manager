@@ -3,7 +3,7 @@ import { useUserAuth } from "../../Context/UserAuthContext";
 export const UsersOverview = () => {
   const { usersCount } = useUserAuth();
   return (
-    <div className="row">
+    <div className="row mb-5">
       <div className="col-12">
         <h2 style={{ color: "#4f43ae", fontWeight: "bold" }}>Overview</h2>
         <div className="row">

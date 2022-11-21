@@ -85,7 +85,7 @@ export const Menu = () => {
           <div className="col  mb-3">
             <button className="dashboard-button login-btn btn" onClick={()=>{handleLogout()}}>
               <img src={account}></img>
-              <h3>Account</h3>
+              <h3>Logout</h3>
             </button>
           </div>
         </div>
