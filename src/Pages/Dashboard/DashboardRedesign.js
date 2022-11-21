@@ -41,7 +41,7 @@ export const DashboardRedesign = () => {
         try {
           const data = await getDocs(
             collection(db, "Users", `${user.uid}`, "Personal Items"),
-            orderBy("Name", "asc")
+            orderBy("Name", "desc")
           );
           var count = 0;
           var value = 0;

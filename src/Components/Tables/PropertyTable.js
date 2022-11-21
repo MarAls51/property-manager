@@ -188,13 +188,7 @@ export const PropertyTable = (props) => {
                     >
                      <img src={trash}/>
                     </button>
-                    <button
-                      onClick={() => {
-                        handleDownloadItems();
-                      }}
-                    >
-                      Download
-                    </button>
+                    
                   </td>
                 </tr>
               </>
