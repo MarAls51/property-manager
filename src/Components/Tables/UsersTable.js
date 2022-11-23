@@ -81,7 +81,6 @@ export const UsersTable = () => {
     });
   };
 
-
   async function handleDeleteUser(id) {
     try {
       const query = await doc(db, "Users", `${id}`);
@@ -96,7 +95,6 @@ export const UsersTable = () => {
     }
     return;
   }
-
 
   async function handleDownloadUser(id) {
     try {
@@ -151,8 +149,6 @@ export const UsersTable = () => {
       console.log(error.message);
     }
 
-
-    
   }
 
   return (
