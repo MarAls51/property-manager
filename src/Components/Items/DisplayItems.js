@@ -57,7 +57,7 @@ export const DisplayItems = (props) => {
             props.setAdding(true);
           }}
         >
-          <img src={add}></img>
+          <img alt="add item" height={"30px"} width={"30px"}src={add}></img>
         </button>
         <button
           onClick={() => {
@@ -69,7 +69,7 @@ export const DisplayItems = (props) => {
             outline: "none",
           }}
         >
-          <img src={download} />
+          <img alt="download" height={"30px"} width={"30px"} src={download} />
         </button>
       </div>
 

@@ -81,37 +81,21 @@ export const MessageTable = (props) => {
     });
   };
 
-  const handleMessage = async (id) => {
+  const handleMessage = async (id, email) => {
     try {
-      const docCollection1 = adminAccount ? "Admins" : "Users";
-      const docRef = await doc(db, docCollection1, `${user.uid}`);
-      const colRef = await collection(docRef, "Messages");
-      const date = await new Date();
+     
+      
+      
 
-      await addDoc(colRef, {
-        text: `${email} opened a conversation on ${date.toString()}`,
-        createdAt: new Date(),
-        uid: user.uid,
-        id: id,
-        type: "Console",
-      });
-
+    
       let docCollection2 = "Users";
       const data = await getDoc(doc(db, "Admins", `${id}`));
       if (data.exists()) {
         docCollection2 = "Admins";
       }
-      const docRef2 = await doc(db, docCollection2, `${id}`);
-      const colRef2 = await collection(docRef2, "Messages");
-      await addDoc(colRef2, {
-        text: `${email} opened a conversation on ${date.toString()}`,
-        createdAt: new Date(),
-        uid: id,
-        id: user.uid,
-        type: "Console",
-      });
+    
 
-      props.setSelectedItem({ usersType: docCollection2, id: id });
+      props.setSelectedItem({ usersType: docCollection2, id: id, Email: email });
       props.setMessaging(true);
       props.setViewing(false);
     } catch (error) {
@@ -214,7 +198,7 @@ export const MessageTable = (props) => {
                     <>
                       <button
                         onClick={() => {
-                          handleMessage(row.original.id);
+                          handleMessage(row.original.id, row.original.Email);
                         }}
                         style={{
                           backgroundColor: "inherit",
@@ -222,7 +206,7 @@ export const MessageTable = (props) => {
                           outline: "none",
                         }}
                       >
-                        <img src={message}/>
+                        <img alt="message" src={message}/>
                       </button>
                      {!adminAccount && <button
                         onClick={() => {
@@ -234,7 +218,7 @@ export const MessageTable = (props) => {
                           outline: "none",
                         }}
                       >
-                        <img src={grant}/>
+                        <img alt="grant access" src={grant}/>
                       </button>}
                       {!adminAccount && <button
                         onClick={() => {
@@ -246,7 +230,7 @@ export const MessageTable = (props) => {
                           outline: "none",
                         }}
                       >
-                      <img src={revoke}/>
+                      <img alt="revoke access" src={revoke}/>
                       </button> }
                     </>
                   </td>
@@ -272,7 +256,7 @@ export const MessageTable = (props) => {
             }}
             disabled={!canPreviousPage}
           >
-            <img src={back} />
+            <img alt="previous" src={back} />
           </button>
           <span>
             Page {state.pageIndex + 1} of{" "}
@@ -291,7 +275,7 @@ export const MessageTable = (props) => {
             }}
             disabled={!canNextPage}
           >
-            <img src={forward} />
+            <img alt="next" src={forward} />
           </button>
         </div>
       </div>

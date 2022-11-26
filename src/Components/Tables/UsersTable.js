@@ -167,7 +167,7 @@ export const UsersTable = () => {
              setSelectedUsersData();
             }}
           >
-            <img src={back} />
+            <img alt="back" src={back} />
           </button>
         </div>
       )}
@@ -217,7 +217,7 @@ export const UsersTable = () => {
                             outline: "none",
                           }}
                         >
-                         <img src={view}/>
+                         <img alt="view" src={view}/>
                         </button>
                        {adminAccount && <button
                           onClick={() => {
@@ -229,7 +229,7 @@ export const UsersTable = () => {
                             outline: "none",
                           }}
                         >
-                          <img src={trash}/>
+                          <img alt="delete" src={trash}/>
                         </button>}
                         <button
                           onClick={() => {
@@ -241,7 +241,7 @@ export const UsersTable = () => {
                             outline: "none",
                           }}
                         >
-                         <img src={download}/>
+                         <img alt="download" src={download}/>
                         </button>
                       </>
                   
@@ -268,7 +268,7 @@ export const UsersTable = () => {
             }}
             disabled={!canPreviousPage}
           >
-            <img src={back} />
+            <img alt="previous" src={back} />
           </button>
           <span>
             Page {state.pageIndex + 1} of{" "}
@@ -287,7 +287,7 @@ export const UsersTable = () => {
             }}
             disabled={!canNextPage}
           >
-            <img src={forward} />
+            <img alt="next" src={forward} />
           </button>
         </div>
       </div>

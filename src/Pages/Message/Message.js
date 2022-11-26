@@ -1,11 +1,9 @@
 import React from "react";
-import { CustomNav } from "../../Components/Navbar/Navbar";
 import "./Message.css";
 import { collection, getDocs } from "firebase/firestore";
 import { useEffect } from "react";
 import { db } from "../../Context/firebase";
 import { useUserAuth } from "../../Context/UserAuthContext";
-import { CustomFooter } from "../../Components/Footer/Footer";
 import { Chat } from "../../Components/ChatBox/Chat";
 export const Message = () => {
   const { user, userDataUpdated, adminAccount, setUsersData, usersData } = useUserAuth();
@@ -24,7 +22,7 @@ export const Message = () => {
               };
             })
           );
-          let accessedAccountList = [];
+         
           let adminAccounts = [];
           if (adminAccount !== true) {
             const data2 = await getDocs(collection(db, "Admins"));

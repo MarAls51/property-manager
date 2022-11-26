@@ -6,7 +6,7 @@ import { useUserAuth } from "../../Context/UserAuthContext";
 import shared from "../../Assets/shared.svg";
 import { useNavigate } from "react-router-dom";
 export const AccountMenu = () => {
-  const { user, adminAccount, setEmail, setUserData, setUsersData, setItemsCount, setItemsValue, setUsersCount, logOut, setAdminMode, setAdminAccount } = useUserAuth();
+  const { user, adminAccount, setEmail, setUserData, setSelectedItem, setUsersData, setItemsCount, setItemsValue, setUsersCount, logOut, setAdminMode, setAdminAccount } = useUserAuth();
   const navigate = useNavigate()
   async function handleDeleteUser() {
     try {
@@ -39,6 +39,7 @@ export const AccountMenu = () => {
       setEmail("");
       setUsersData([]);
       setUsersCount(0);
+      setSelectedItem("")
       navigate("/");
     } catch (error) {
       console.log(error.message);
@@ -46,10 +47,10 @@ export const AccountMenu = () => {
   };
   return (
     <>
-        <div className="row justify-content-center align-items-center">
+        <div className="row mt-2 justify-content-center align-items-center">
           <div className="col  mb-3">
             <button onClick={()=> handleDeleteUser()} className="dashboard-button login-btn btn">
-              <img src={shared}></img>
+              <img alt="" src={shared}></img>
               <h3>Delete Account</h3>
             </button>
           </div> 
@@ -57,7 +58,7 @@ export const AccountMenu = () => {
           <button className="dashboard-button login-btn btn" onClick={() => {
             handleLogout();
           }}>
-            <img src={shared}></img>
+            <img alt="" src={shared}></img>
             <h3>Logout</h3>
           </button>
         </div>

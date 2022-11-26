@@ -1,11 +1,10 @@
 import React from "react";
-import { CustomNav } from "../../Components/Navbar/Navbar";
 import "./AccessedProperty.css";
 import { collection, getDocs } from "firebase/firestore";
 import { useEffect } from "react";
 import { db } from "../../Context/firebase";
 import { useUserAuth } from "../../Context/UserAuthContext";
-import { CustomFooter } from "../../Components/Footer/Footer";
+
 import { Users } from "../../Components/Users/Users";
 export const AccessedProperty = () => {
   const { user, usersData, userDataUpdated, adminAccount, setUsersData, setUsersCount } = useUserAuth();

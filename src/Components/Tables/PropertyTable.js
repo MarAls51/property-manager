@@ -145,7 +145,7 @@ export const PropertyTable = (props) => {
                         outline: "none",
                       }}
                     >
-                      <img src={edit}/>
+                      <img alt="edit" src={edit}/>
                     </button>
                     <button
                       onClick={() => {
@@ -157,7 +157,7 @@ export const PropertyTable = (props) => {
                         outline: "none",
                       }}
                     >
-                     <img src={trash}/>
+                     <img alt="delete" src={trash}/>
                     </button>
                   </td>
                 </tr>
@@ -182,7 +182,7 @@ export const PropertyTable = (props) => {
             }}
             disabled={!canPreviousPage}
           >
-            <img src={back} />
+            <img alt="previous" src={back} />
           </button>
           <span>
             Page {state.pageIndex + 1} of{" "}
@@ -201,7 +201,7 @@ export const PropertyTable = (props) => {
             }}
             disabled={!canNextPage}
           >
-            <img src={forward} />
+            <img alt="next" src={forward} />
           </button>
         </div>
       </div>

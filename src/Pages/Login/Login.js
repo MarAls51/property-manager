@@ -74,6 +74,7 @@ const Login = () => {
     };
 
     fetchUsers();
+    // eslint-disable-next-line
   }, [user]);
 
   return (

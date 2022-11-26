@@ -40,7 +40,7 @@ export const AddItems = (props) => {
               props.setAdding(false);
             }}
           >
-            <img src={back} />
+            <img alt="back" src={back} />
           </button>
         </div>
         <Form className="p-5" onSubmit={handleAddItem}>

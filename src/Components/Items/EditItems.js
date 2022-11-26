@@ -45,7 +45,7 @@ export const EditItems = (props) => {
               props.setEditing(false);
             }}
           >
-            <img src={back} />
+            <img alt="back" src={back} />
           </button>
         </div>
         <Form onSubmit={handleEditItem} className="p-5">

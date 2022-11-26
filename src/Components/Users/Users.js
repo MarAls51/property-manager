@@ -1,6 +1,5 @@
 
 import { useState } from "react";
-import { AddItems } from "./AddItems";
 import { DisplayUsers } from "./DisplayUsers";
 export const Users = () => {
   const [adding, setAdding] = useState(false);
