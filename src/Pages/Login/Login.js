@@ -5,6 +5,7 @@ import { useUserAuth } from "../../Context/UserAuthContext";
 import { getDoc, doc, setDoc } from "firebase/firestore";
 import { db } from "../../Context/firebase";
 import "./Login.css";
+import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 
 const Login = () => {
   const [password, setPassword] = useState("");
@@ -33,6 +34,17 @@ const Login = () => {
       });
     } catch (err) {
       console.log(err);
+    }
+  };
+
+  const sendResetEmail = async (e) => {
+    try{
+    const auth = getAuth();
+    await sendPasswordResetEmail(auth, email)
+    alert("Password Email Sent!")
+    }
+    catch(err){
+      console.log(err)
     }
   };
 
@@ -123,6 +135,19 @@ const Login = () => {
                       </Link>
                     </span>
                   </div>
+                  <div className="d-flex">
+                    <span>
+                      Forgot your password?{" "}
+                      <Link
+                        className="login-link"
+                        onClick={() => {
+                          sendResetEmail();
+                        }}
+                      >
+                        Send Reset Email
+                      </Link>
+                    </span>
+                  </div>
                 </>
               )}
               {!flag && (
@@ -165,6 +190,7 @@ const Login = () => {
                       </Link>
                     </span>
                   </div>
+                  
                 </>
               )}
             </div>
