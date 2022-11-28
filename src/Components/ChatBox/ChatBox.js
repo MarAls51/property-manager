@@ -38,7 +38,7 @@ export const ChatBox = (props) => {
         createdAt: serverTimestamp(),
         uid: props.selectedItem.id,
         id: user.uid,
-        type: "Recieved",
+        type: "Received",
       };
 
       const docRef2 = await doc(
