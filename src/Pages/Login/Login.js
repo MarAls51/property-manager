@@ -18,7 +18,7 @@ const Login = () => {
       await logIn(email, password);
       await setEmail(email);
     } catch (err) {
-      console.log(err);
+      console.log('Login Failed');
     }
   };
 
@@ -32,7 +32,7 @@ const Login = () => {
         });
       });
     } catch (err) {
-      console.log(err);
+      console.log('Signup Failed');
     }
   };
 
@@ -69,7 +69,7 @@ const Login = () => {
           }
         }
       } catch (err) {
-        console.log(err);
+        console.log('Failed to fetch users');
       }
     };
 

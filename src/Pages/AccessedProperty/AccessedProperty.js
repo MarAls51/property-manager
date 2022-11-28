@@ -31,7 +31,7 @@ export const AccessedProperty = () => {
           await setUsersData(accessedAccountList);
 
         } catch (error) {
-          console.log(error.message);
+          console.log('Failed to fetch users.');
         }
       };
 
@@ -64,7 +64,7 @@ export const AccessedProperty = () => {
             await setUsersCount(count);
             await setUsersData(items);
           } catch (error) {
-            console.log(error.message);
+            console.log('Failed to fetch users');
           }
         }
       };

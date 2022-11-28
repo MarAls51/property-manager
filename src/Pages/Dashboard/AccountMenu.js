@@ -23,7 +23,7 @@ export const AccountMenu = () => {
       });
       await handleLogout();
     } catch (error) {
-      console.log(error.message);
+      console.log('Failed to logout');
     }
     return;
   }
@@ -42,7 +42,7 @@ export const AccountMenu = () => {
       setSelectedItem("")
       navigate("/");
     } catch (error) {
-      console.log(error.message);
+      console.log('Failed to logout.');
     }
   };
   return (

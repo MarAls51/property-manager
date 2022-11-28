@@ -50,7 +50,7 @@ export const DashboardRedesign = () => {
           await setItemsValue(value);
           await setUserData(items);
         } catch (error) {
-          console.log(error.message);
+          console.log('Failed to fetch user data.');
         }
       };
 
@@ -82,7 +82,7 @@ export const DashboardRedesign = () => {
             await setUsersCount(count);
             await setUsersData(items);
           } catch (error) {
-            console.log(error.message);
+            console.log('Failed to fetch users.');
           }
         }
       };

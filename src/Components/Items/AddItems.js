@@ -20,7 +20,7 @@ export const AddItems = (props) => {
         });
         setUserDataUpdated(!userDataUpdated);
       } catch (error) {
-        console.log(error.message);
+        console.log('Failed to fetch items');
       }
   };
 

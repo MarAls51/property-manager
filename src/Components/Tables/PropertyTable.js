@@ -76,7 +76,7 @@ export const PropertyTable = (props) => {
       await deleteDoc(doc(colRef, id));
       setUserDataUpdated(!userDataUpdated);
     } catch (error) {
-      console.log(error.message);
+      console.log("Failed to delete");
     }
     return;
   }
@@ -96,7 +96,7 @@ export const PropertyTable = (props) => {
         props.setEditing(true);
       }
     } catch (error) {
-      console.log(error.message);
+      console.log('Failed to edit.');
     }
     return;
   }
@@ -124,9 +124,6 @@ export const PropertyTable = (props) => {
                   {row.cells.map((cell) => {
                     return (
                       <td
-                        onClick={() => {
-                          console.log(cell);
-                        }}
                         {...cell.getCellProps()}
                       >
                         {cell.column.Header === "Price" && "$"}

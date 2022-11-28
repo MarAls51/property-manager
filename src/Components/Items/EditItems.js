@@ -27,7 +27,7 @@ export const EditItems = (props) => {
         });
         setUserDataUpdated(!userDataUpdated);
       } catch (error) {
-        console.log(error.message);
+        console.log('Failed to edit');
       }
   };
 
@@ -53,6 +53,7 @@ export const EditItems = (props) => {
             <label for="formBasicName">Item Name</label>
             <Form.Control
               type="text"
+              required
               placeholder={props.selectedItem.Name}
               onChange={(e) => setName(e.target.value)}
             />
@@ -62,6 +63,7 @@ export const EditItems = (props) => {
             <label for="formBasicPrice">Price</label>
             <Form.Control
               type="text"
+              required
               placeholder={props.selectedItem.Price}
               onChange={(e) => setPrice(e.target.value)}
             />

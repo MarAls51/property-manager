@@ -39,7 +39,7 @@ export const DisplayItems = (props) => {
       });
       doc.save("Properties.pdf");
     } catch (error) {
-      console.log(error.message);
+      console.log('Failed to Save');
     }
     return;
   }

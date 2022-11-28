@@ -1,7 +1,14 @@
 import { useUserAuth } from "../../Context/UserAuthContext";
 import { usePagination, useTable } from "react-table";
 import { useMemo } from "react";
-import { doc, getDoc, getDocs, deleteDoc, addDoc, collection } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  getDocs,
+  deleteDoc,
+  addDoc,
+  collection,
+} from "firebase/firestore";
 import { useGlobalFilter } from "react-table";
 import { db } from "../../Context/firebase";
 import { usersColumns } from "./UsersColumns";
@@ -83,23 +90,21 @@ export const MessageTable = (props) => {
 
   const handleMessage = async (id, email) => {
     try {
-     
-      
-      
-
-    
       let docCollection2 = "Users";
       const data = await getDoc(doc(db, "Admins", `${id}`));
       if (data.exists()) {
         docCollection2 = "Admins";
       }
-    
 
-      props.setSelectedItem({ usersType: docCollection2, id: id, Email: email });
+      props.setSelectedItem({
+        usersType: docCollection2,
+        id: id,
+        Email: email,
+      });
       props.setMessaging(true);
       props.setViewing(false);
     } catch (error) {
-      console.log(error.message);
+      console.log('Failed to open messages');
     }
     return;
   };
@@ -108,27 +113,27 @@ export const MessageTable = (props) => {
     try {
       const docRef2 = await doc(db, "Users", `${id}`);
       const colRef2 = await collection(docRef2, "AccessedAccounts");
-      const query = await getDocs(await collection(docRef2, "AccessedAccounts"));
+      const query = await getDocs(
+        await collection(docRef2, "AccessedAccounts")
+      );
       let queryExists = false;
       query.forEach(async (document) => {
-      if(document.data().id === user.uid){
-        console.log("Already has access");
-        queryExists = true;
-        return;
+        if (document.data().id === user.uid) {
+          queryExists = true;
+          return;
         }
       });
-      if(queryExists){
+      if (queryExists) {
         return;
       }
-      
-        await addDoc(colRef2, {
-          Email: email,
-          User: true,
-          id: user.uid,
-        });
-        console.log("Access Granted");
+
+      await addDoc(colRef2, {
+        Email: email,
+        User: true,
+        id: user.uid,
+      });
     } catch (error) {
-      console.log(error.message);
+      console.log('Failed to grant access');
     }
     setAccess(!access);
     return;
@@ -138,15 +143,16 @@ export const MessageTable = (props) => {
     try {
       const docRef2 = await doc(db, "Users", `${id}`);
       const colRef2 = await collection(docRef2, "AccessedAccounts");
-        const query = await getDocs(await collection(docRef2, "AccessedAccounts"));
-        query.forEach(async (document) => {
-        if(document.data().id === user.uid){
+      const query = await getDocs(
+        await collection(docRef2, "AccessedAccounts")
+      );
+      query.forEach(async (document) => {
+        if (document.data().id === user.uid) {
           await deleteDoc(doc(colRef2, document.id));
-          }
-        });
-        console.log("Access Revoked");
+        }
+      });
     } catch (error) {
-      console.log(error.message);
+      console.log('Failed to revoke access.');
     }
     setAccess(!access);
     return;
@@ -183,12 +189,7 @@ export const MessageTable = (props) => {
                 <tr {...row.getRowProps()}>
                   {row.cells.map((cell) => {
                     return (
-                      <td
-                        onClick={() => {
-                          console.log(cell);
-                        }}
-                        {...cell.getCellProps()}
-                      >
+                      <td {...cell.getCellProps()}>
                         {cell.column.Header === "Price" && "$"}
                         {cell.render("Cell")}
                       </td>
@@ -206,32 +207,36 @@ export const MessageTable = (props) => {
                           outline: "none",
                         }}
                       >
-                        <img alt="message" src={message}/>
+                        <img alt="message" src={message} />
                       </button>
-                     {!adminAccount && <button
-                        onClick={() => {
-                          grantAccess(row.original.id);
-                        }}
-                        style={{
-                          backgroundColor: "inherit",
-                          border: "none",
-                          outline: "none",
-                        }}
-                      >
-                        <img alt="grant access" src={grant}/>
-                      </button>}
-                      {!adminAccount && <button
-                        onClick={() => {
-                          revokeAccess(row.original.id);
-                        }}
-                        style={{
-                          backgroundColor: "inherit",
-                          border: "none",
-                          outline: "none",
-                        }}
-                      >
-                      <img alt="revoke access" src={revoke}/>
-                      </button> }
+                      {!adminAccount && (
+                        <button
+                          onClick={() => {
+                            grantAccess(row.original.id);
+                          }}
+                          style={{
+                            backgroundColor: "inherit",
+                            border: "none",
+                            outline: "none",
+                          }}
+                        >
+                          <img alt="grant access" src={grant} />
+                        </button>
+                      )}
+                      {!adminAccount && (
+                        <button
+                          onClick={() => {
+                            revokeAccess(row.original.id);
+                          }}
+                          style={{
+                            backgroundColor: "inherit",
+                            border: "none",
+                            outline: "none",
+                          }}
+                        >
+                          <img alt="revoke access" src={revoke} />
+                        </button>
+                      )}
                     </>
                   </td>
                 </tr>

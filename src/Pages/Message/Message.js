@@ -49,7 +49,7 @@ export const Message = () => {
 
           await setUsersData(allUsers);
         } catch (error) {
-          console.log(error.message);
+          console.log('Failed to fetch users');
         }
       };
 

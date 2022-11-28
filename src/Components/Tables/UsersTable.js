@@ -91,7 +91,7 @@ export const UsersTable = () => {
       });
       setUserDataUpdated(!userDataUpdated);
     } catch (error) {
-      console.log(error.message);
+      console.log('Failed to delete user.');
     }
     return;
   }
@@ -125,7 +125,7 @@ export const UsersTable = () => {
       })
       doc.save("Properties.pdf");
     } catch (error) {
-      console.log(error.message);
+      console.log('Failed to download.');
     }
     return;
   }
@@ -146,7 +146,7 @@ export const UsersTable = () => {
       );
       await setSelectedUsersData(items);
     } catch (error) {
-      console.log(error.message);
+      console.log('Failed to select user.');
     }
 
   }
@@ -193,9 +193,6 @@ export const UsersTable = () => {
                   {row.cells.map((cell) => {
                     return (
                       <td
-                        onClick={() => {
-                          console.log(cell);
-                        }}
                         {...cell.getCellProps()}
                       >
                        {cell.column.Header === "Price" && "$"}
